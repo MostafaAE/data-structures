@@ -591,6 +591,45 @@ public:
             cur2 = cur2->next;
         }
     }
+
+    void add_big_ints(LinkedList &list)
+    {
+        Node *cur1 = head, *cur2 = list.head;
+        int carry = 0;
+        while (cur1 && cur2)
+        {
+            int sum = carry + cur1->data + cur2->data;
+            carry = sum / 10;
+            sum %= 10;
+            cur1->data = sum;
+            cur1 = cur1->next;
+            cur2 = cur2->next;
+        }
+
+        while (cur1 && carry)
+        {
+            int sum = carry + cur1->data;
+
+            carry = sum / 10;
+            sum %= 10;
+
+            cur1->data = sum;
+            cur1 = cur1->next;
+        }
+        while (cur2)
+        {
+            int sum = carry + cur2->data;
+
+            carry = sum / 10;
+            sum %= 10;
+
+            insert_end(sum);
+            cur2 = cur2->next;
+        }
+
+        if (carry)
+            insert_end(carry);
+    }
 };
 
 //******************************************************//
@@ -1088,6 +1127,38 @@ void test_insert_alternate()
     }
     list.debug_print_list("********");
 }
+
+void test_add_big_ints()
+{
+    cout << "\n\ntest22\n";
+    LinkedList list, list2;
+
+    list.insert_end(9);
+    list.insert_end(6);
+    list.insert_end(5);
+    list2.insert_end(8);
+    list2.insert_end(7);
+    list2.insert_end(6);
+    list2.insert_end(4);
+    list2.insert_end(5);
+    list2.insert_end(7);
+    list2.insert_end(8);
+    list2.insert_end(9);
+
+    list.add_big_ints(list2);
+
+    list.print();
+
+    string expected = "7 4 2 5 5 7 8 9";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -1110,7 +1181,8 @@ int main()
     // test_move_to_back();
     // test_find_max_recursively();
     // test_arrange_odd_and_even();
-    test_insert_alternate();
+    // test_insert_alternate();
+    test_add_big_ints();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
