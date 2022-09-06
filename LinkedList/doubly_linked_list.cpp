@@ -289,6 +289,37 @@ public:
             delete_node(temp);
         }
     }
+
+    Node *delete_and_link(Node *cur)
+    {
+        Node *ret = cur->prev;
+        link(cur->prev, cur->next);
+        delete_node(cur);
+        return ret;
+    }
+
+    void delete_node_with_key(int val)
+    {
+        for (Node *cur = head; cur; cur = cur->next)
+        {
+            if (cur->data == val)
+            {
+
+                if (cur == head)
+                {
+                    delete_front();
+                }
+                else if (cur == tail)
+                {
+                    delete_end();
+                }
+                else
+                    delete_and_link(cur);
+
+                return;
+            }
+        }
+    }
 };
 //******************************************************//
 // test functions
@@ -367,12 +398,41 @@ void test_delete_end()
     list.debug_print_list("********");
 }
 
+void test_delete_node_with_key()
+{
+    cout << "\n\ntest_delete_node_with_key\n";
+    DoublyLinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.insert_end(5);
+    list.delete_node_with_key(1);
+    list.delete_node_with_key(5);
+    list.delete_node_with_key(3);
+    // list.delete_node_with_key(2);
+    // list.delete_node_with_key(4);
+    list.print();
+    // list.print_reversed();
+
+    string expected = "2 4";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
     // test_insert_sorted();
-    test_delete_front();
-    test_delete_end();
+    // test_delete_front();
+    // test_delete_end();
+    test_delete_node_with_key();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
