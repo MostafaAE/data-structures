@@ -431,6 +431,62 @@ public:
         head->next = nullptr;
         swap(head, tail);
     }
+
+    void left_rotate()
+    {
+        if (length > 1)
+        {
+            tail->next = head;
+            head = head->next;
+            tail = tail->next;
+            tail->next = nullptr;
+        }
+    }
+
+    void left_rotate(int k)
+    {
+        k %= length;
+        while (k--)
+            left_rotate();
+    }
+
+    void left_rotate2(int k)
+    {
+        if (length <= 1 || k % length == 0)
+            return; // 0 or 1 elements or useless rotation
+        k %= length;
+
+        Node *cur = get_nth(k);
+
+        tail->next = head;
+        tail = cur;
+        head = cur->next;
+        tail->next = nullptr;
+    }
+
+    // here we delete the dups with O(n) but with memory tradeoff
+    // we can implement this function in O(n^2) with memory O(1) by using 2 loops
+    void remove_duplicates()
+    {
+        vector<bool> exist(1001, 0);
+        Node *cur = head, *prev = nullptr;
+        while (cur)
+        {
+            if (exist[cur->data])
+            {
+                prev->next = cur->next;
+                Node *temp = cur;
+                cur = cur->next;
+                delete_node(temp);
+            }
+            else
+            {
+                exist[cur->data] = 1;
+                prev = cur;
+                cur = cur->next;
+            }
+        }
+    }
 };
 
 //******************************************************//
@@ -739,7 +795,7 @@ void test_reverse_recursively()
     list.debug_print_list("********");
 }
 
-void swap_head_tail()
+void test_swap_head_tail()
 {
     cout << "\n\nswap_head_tail\n";
     LinkedList list;
@@ -752,6 +808,51 @@ void swap_head_tail()
     list.print();
 
     string expected = "4 2 3 1";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
+void test_left_rotate()
+{
+    cout << "\n\ntest_left_rotate\n";
+    LinkedList list;
+
+    list.insert_end(6);
+    list.insert_end(10);
+    list.insert_end(8);
+    list.insert_end(15);
+    list.left_rotate2(2000000);
+    list.print();
+
+    string expected = "6 10 8 15";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
+void test_remove_duplicates()
+{
+    cout << "\n\ntest16\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(1);
+    list.insert_end(1);
+    list.insert_end(1);
+    list.remove_duplicates();
+    list.print();
+
+    string expected = "1 2";
     string result = list.debug_to_string();
     if (expected != result)
     {
@@ -776,7 +877,9 @@ int main()
     // test_reverse();
     // test_delete_even_positions();
     // test_insert_sorted();
-    test_reverse_recursively();
+    // test_reverse_recursively();
+    // test_left_rotate();
+    test_remove_duplicates();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
