@@ -487,6 +487,19 @@ public:
             }
         }
     }
+
+    void remove_last_occurance(int val)
+    {
+        int idx = 1, last_idx = -1;
+        for (Node *cur = head; cur; cur = cur->next)
+        {
+            if (cur->data == val)
+                last_idx = idx;
+
+            idx++;
+        }
+        delete_nth(last_idx);
+    }
 };
 
 //******************************************************//
@@ -862,6 +875,32 @@ void test_remove_duplicates()
     list.debug_print_list("********");
 }
 
+void test_remove_last_occurance()
+{
+    cout << "\n\ntest17\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(1);
+    list.insert_end(1);
+    list.insert_end(2);
+    list.remove_last_occurance(1);
+    list.remove_last_occurance(1);
+    list.remove_last_occurance(2);
+    list.remove_last_occurance(2);
+    list.print();
+
+    string expected = "1";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -879,7 +918,8 @@ int main()
     // test_insert_sorted();
     // test_reverse_recursively();
     // test_left_rotate();
-    test_remove_duplicates();
+    // test_remove_duplicates();
+    test_remove_last_occurance();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
