@@ -345,6 +345,26 @@ public:
             }
         }
     }
+
+    void delete_even_positions()
+    {
+        if (!head || head == tail)
+            return;
+
+        Node *cur = head->next, *to_delete = cur;
+
+        while (cur && cur->next)
+        {
+            to_delete = cur;
+            cur = cur->next->next;
+            delete_and_link(to_delete);
+        }
+
+        if (cur == tail)
+        {
+            delete_end();
+        }
+    }
 };
 //******************************************************//
 // test functions
@@ -451,13 +471,40 @@ void test_delete_node_with_key()
     list.debug_print_list("********");
 }
 
+void test_delete_even_positions()
+{
+    cout << "\n\ntest5\n";
+    DoublyLinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.insert_end(5);
+    list.insert_end(6);
+    list.delete_even_positions();
+
+    list.print();
+    // list.print_reversed();
+
+    string expected = "1 3 5";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
     // test_insert_sorted();
     // test_delete_front();
     // test_delete_end();
-    test_delete_node_with_key();
+    // test_delete_node_with_key();
+    test_delete_even_positions();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
