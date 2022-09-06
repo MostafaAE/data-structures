@@ -251,12 +251,50 @@ public:
 
         // This idea is used in Insertion Sort Algorithm
     }
+
+    void delete_front()
+    {
+        if (!head)
+            return;
+
+        if (head == tail)
+        {
+            delete_node(head);
+            head = tail = nullptr;
+        }
+        else
+        {
+            Node *temp = head;
+            head->next->prev = nullptr;
+            head = head->next;
+            delete_node(temp);
+        }
+    }
+
+    void delete_end()
+    {
+        if (!head)
+            return;
+
+        if (head == tail)
+        {
+            delete_node(head);
+            head = tail = nullptr;
+        }
+        else
+        {
+            Node *temp = tail;
+            tail->prev->next = nullptr;
+            tail = tail->prev;
+            delete_node(temp);
+        }
+    }
 };
 //******************************************************//
 // test functions
 void test_insert_sorted()
 {
-    cout << "\n\ntest1\n";
+    cout << "\n\ntest_insert_sorted\n";
     DoublyLinkedList list;
 
     list.insert_end(3);
@@ -281,10 +319,60 @@ void test_insert_sorted()
     list.debug_print_list("********");
 }
 
+void test_delete_front()
+{
+    cout << "\n\ntest_delete_front\n";
+    DoublyLinkedList list;
+
+    list.insert_end(3);
+    list.insert_end(5);
+    list.insert_end(7);
+    list.delete_front();
+    list.delete_front();
+    list.print();
+    // list.print_reversed();
+
+    string expected = "7";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
+void test_delete_end()
+{
+    cout << "\n\ntest_delete_end\n";
+    DoublyLinkedList list;
+
+    list.insert_end(3);
+    list.insert_end(5);
+    list.insert_end(7);
+    list.delete_end();
+    // list.delete_front();
+    list.delete_end();
+    list.delete_end();
+    list.print();
+    // list.print_reversed();
+
+    string expected = "";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
-    test_insert_sorted();
+    // test_insert_sorted();
+    test_delete_front();
+    test_delete_end();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
