@@ -145,6 +145,20 @@ public:
         while (times--)
             right_rotate();
     }
+
+    int find_transposition(int val)
+    {
+        int idx = find(val);
+        if (idx == -1)
+            return -1;
+
+        if (idx > 0)
+        {
+            swap(arr[idx], arr[idx - 1]);
+            return (idx - 1);
+        }
+        return 0;
+    }
 };
 
 int main()
@@ -154,6 +168,23 @@ int main()
     for (int i = 0; i < 10; i++)
         v.set(i, i);
 
+    v.print();
+
+    v.right_rotate();
+    v.print();
+
+    v.left_rotate();
+    v.print();
+
+    v.right_rotate(3);
+    v.print();
+
+    cout << v.pop(2) << endl;
+    v.print();
+
+    v.find_transposition(0);
+    v.print();
+    v.find_transposition(0);
     v.print();
 
     return 0;
