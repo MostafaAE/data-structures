@@ -320,6 +320,31 @@ public:
             }
         }
     }
+
+    void delete_all_nodes_with_key(int val)
+    {
+        Node *cur = head, *temp = head;
+
+        while (cur)
+        {
+            temp = cur;
+            cur = cur->next;
+            if (temp->data == val)
+            {
+
+                if (temp == head)
+                {
+                    delete_front();
+                }
+                else if (temp == tail)
+                {
+                    delete_end();
+                }
+                else
+                    delete_and_link(temp);
+            }
+        }
+    }
 };
 //******************************************************//
 // test functions
