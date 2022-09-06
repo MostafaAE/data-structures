@@ -341,6 +341,36 @@ public:
             }
         }
     }
+
+    void reverse()
+    {
+        Node *prev{}, *next{};
+        for (Node *cur = head; cur; cur = next)
+        {
+            next = cur->next;
+            cur->next = prev;
+            prev = cur;
+        }
+        swap(head, tail);
+    }
+
+    Node *reverse_recursively(Node *cur)
+    {
+        if (cur && cur->next)
+        {
+            Node *rem = reverse_recursively(cur->next);
+            rem->next = cur;
+            cur->next = nullptr;
+        }
+
+        return cur;
+    }
+
+    void reverse_recursively()
+    {
+        reverse_recursively(head);
+        swap(head, tail);
+    }
 };
 
 //******************************************************//
@@ -557,6 +587,28 @@ void test_swap_pairs()
     list.debug_print_list("********");
 }
 
+void test_reverse()
+{
+    cout << "\n\ntest_reverse\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.reverse();
+    list.print();
+
+    string expected = "4 3 2 1";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -568,7 +620,8 @@ int main()
     // test_delete_node_with_key();
     // test_get_nth();
     // test_is_same();
-    test_swap_pairs();
+    // test_swap_pairs();
+    test_reverse();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
