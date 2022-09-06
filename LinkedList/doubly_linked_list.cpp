@@ -365,6 +365,33 @@ public:
             delete_end();
         }
     }
+
+    void delete_odd_positions()
+    {
+        if (!head)
+            return;
+
+        if (head == tail)
+        {
+            delete_front();
+        }
+
+        Node *cur = head, *to_delete = cur;
+        while (cur && cur->next)
+        {
+            to_delete = cur;
+            cur = cur->next->next;
+            if (to_delete == head)
+                head = head->next;
+
+            delete_and_link(to_delete);
+        }
+
+        if (cur == tail)
+        {
+            delete_end();
+        }
+    }
 };
 //******************************************************//
 // test functions
@@ -473,7 +500,7 @@ void test_delete_node_with_key()
 
 void test_delete_even_positions()
 {
-    cout << "\n\ntest5\n";
+    cout << "\n\ntest_delete_even_positions\n";
     DoublyLinkedList list;
 
     list.insert_end(1);
@@ -497,6 +524,32 @@ void test_delete_even_positions()
     list.debug_print_list("********");
 }
 
+void test_delete_odd_positions()
+{
+    cout << "\n\ntest_delete_odd_positions\n";
+    DoublyLinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.insert_end(5);
+    list.insert_end(6);
+    list.delete_odd_positions();
+
+    list.print();
+    // list.print_reversed();
+
+    string expected = "2 4 6";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -504,7 +557,8 @@ int main()
     // test_delete_front();
     // test_delete_end();
     // test_delete_node_with_key();
-    test_delete_even_positions();
+    // test_delete_even_positions();
+    test_delete_odd_positions();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
