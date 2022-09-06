@@ -530,6 +530,21 @@ public:
             }
         }
     }
+
+    int max(Node *cur)
+    {
+        if (cur == tail)
+            return cur->data;
+
+        return std::max(cur->data, max(cur->next));
+    }
+    int max()
+    {
+        if (head == nullptr)
+            return INT_MIN;
+
+        return max(head);
+    }
 };
 
 //******************************************************//
@@ -884,7 +899,7 @@ void test_left_rotate()
 
 void test_remove_duplicates()
 {
-    cout << "\n\ntest16\n";
+    cout << "\n\ntest_remove_duplicates\n";
     LinkedList list;
 
     list.insert_end(1);
@@ -907,7 +922,7 @@ void test_remove_duplicates()
 
 void test_remove_last_occurance()
 {
-    cout << "\n\ntest17\n";
+    cout << "\n\ntest_remove_last_occurance\n";
     LinkedList list;
 
     list.insert_end(1);
@@ -933,7 +948,7 @@ void test_remove_last_occurance()
 
 void test_move_to_back()
 {
-    cout << "\n\ntest18\n";
+    cout << "\n\ntest_move_to_back\n";
     LinkedList list;
 
     list.insert_end(1);
@@ -947,6 +962,30 @@ void test_move_to_back()
 
     string expected = "2 3 2 4 1 1";
     string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
+void test_find_max_recursively()
+{
+    cout << "\n\ntest_find_max_recursively\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(2);
+    list.insert_end(4);
+    list.insert_end(10);
+
+    list.print();
+
+    int expected = 10;
+    int result = list.max();
     if (expected != result)
     {
         cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
@@ -974,7 +1013,8 @@ int main()
     // test_left_rotate();
     // test_remove_duplicates();
     // test_remove_last_occurance();
-    test_move_to_back();
+    // test_move_to_back();
+    test_find_max_recursively();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
