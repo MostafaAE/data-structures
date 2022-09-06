@@ -545,6 +545,26 @@ public:
 
         return max(head);
     }
+
+    void arrange_odd_and_even()
+    {
+        if (length < 3)
+            return;
+        int cnt = length / 2;
+        Node *prev = head, *cur = head->next;
+
+        while (cnt--)
+        {
+            prev->next = cur->next;
+
+            tail->next = cur;
+            cur->next = nullptr;
+            tail = cur;
+
+            cur = prev->next->next;
+            prev = prev->next;
+        }
+    }
 };
 
 //******************************************************//
@@ -994,6 +1014,31 @@ void test_find_max_recursively()
     list.debug_print_list("********");
 }
 
+void test_arrange_odd_and_even()
+{
+    cout << "\n\ntest20\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.insert_end(5);
+
+    list.arrange_odd_and_even();
+
+    list.print();
+
+    string expected = "1 3 5 2 4";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -1014,7 +1059,8 @@ int main()
     // test_remove_duplicates();
     // test_remove_last_occurance();
     // test_move_to_back();
-    test_find_max_recursively();
+    // test_find_max_recursively();
+    test_arrange_odd_and_even();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
