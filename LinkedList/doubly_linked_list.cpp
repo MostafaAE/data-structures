@@ -479,6 +479,21 @@ public:
         swap(start->prev, end->prev);
         swap(start->next, end->next);
     }
+
+    void reverse()
+    {
+        if (length <= 1)
+            return;
+
+        Node *next{};
+        for (Node *cur = head; cur; cur = next)
+        {
+            next = cur->next;
+            cur->next = cur->prev;
+            cur->prev = next;
+        }
+        swap(head, tail);
+    }
 };
 //******************************************************//
 // test functions
@@ -708,6 +723,31 @@ void test_swap_forward_and_backward()
     }
     list.debug_print_list("********");
 }
+
+void test_reverse()
+{
+    cout << "\n\ntest10\n";
+    DoublyLinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.insert_end(5);
+
+    list.reverse();
+    list.print();
+    // list.print_reversed();
+
+    string expected = "5 4 3 2 1";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
 //******************************************************//
 int main()
 {
@@ -719,7 +759,8 @@ int main()
     // test_delete_odd_positions();
     // test_is_palindrome();
     // test_find_middle();
-    test_swap_forward_and_backward();
+    // test_swap_forward_and_backward();
+    test_reverse();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
