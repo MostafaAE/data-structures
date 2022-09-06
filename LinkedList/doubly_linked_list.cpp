@@ -392,6 +392,21 @@ public:
             delete_end();
         }
     }
+
+    bool is_palindrome()
+    {
+        Node *forward = head, *backward = tail;
+
+        for (int i = 0; i < length / 2; i++)
+        {
+            if (forward->data != backward->data)
+                return false;
+
+            forward = forward->next;
+            backward = backward->prev;
+        }
+        return true;
+    }
 };
 //******************************************************//
 // test functions
@@ -550,6 +565,27 @@ void test_delete_odd_positions()
     list.debug_print_list("********");
 }
 
+void test_is_palindrome()
+{
+    cout << "\n\ntest_is_palindrome\n";
+    DoublyLinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(2);
+    list.insert_end(1);
+    list.print();
+    // list.print_reversed();
+
+    bool expected = list.is_palindrome();
+    bool result = true;
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
 //******************************************************//
 int main()
 {
@@ -558,7 +594,8 @@ int main()
     // test_delete_end();
     // test_delete_node_with_key();
     // test_delete_even_positions();
-    test_delete_odd_positions();
+    // test_delete_odd_positions();
+    test_is_palindrome();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
