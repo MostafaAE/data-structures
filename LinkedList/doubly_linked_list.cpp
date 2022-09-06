@@ -494,6 +494,41 @@ public:
         }
         swap(head, tail);
     }
+
+    void merge_2sorted_lists(DoublyLinkedList &other)
+    {
+        Node *start1 = head, *start2 = other.head;
+
+        while (start1 && start2)
+        {
+            if (start1->data > start2->data)
+            {
+                Node *other_next = start2->next;
+
+                link(start1->prev, start2);
+                link(start2, start1);
+                add_node(start2);
+                if (start1 == head)
+                    head = start2;
+
+                start2 = other_next;
+            }
+            else
+                start1 = start1->next;
+        }
+
+        while (start2)
+        {
+            Node *other_next = start2->next;
+
+            link(tail, start2);
+            link(start2, nullptr);
+            add_node(start2);
+            tail = start2;
+
+            start2 = other_next;
+        }
+    }
 };
 //******************************************************//
 // test functions
@@ -700,7 +735,7 @@ void test_find_middle()
 
 void test_swap_forward_and_backward()
 {
-    cout << "\n\ntest9\n";
+    cout << "\n\ntest_swap_forward_and_backward\n";
     DoublyLinkedList list;
 
     list.insert_end(1);
@@ -726,7 +761,7 @@ void test_swap_forward_and_backward()
 
 void test_reverse()
 {
-    cout << "\n\ntest10\n";
+    cout << "\n\ntest_reverse\n";
     DoublyLinkedList list;
 
     list.insert_end(1);
@@ -748,6 +783,34 @@ void test_reverse()
     }
     list.debug_print_list("********");
 }
+
+void test_merge_2sorted_lists()
+{
+    cout << "\n\ntest_merge_2sorted_lists\n";
+    DoublyLinkedList list, list2;
+
+    list.insert_end(1);
+    list.insert_end(3);
+    list.insert_end(5);
+
+    list2.insert_end(2);
+    list2.insert_end(4);
+    list2.insert_end(6);
+    list2.insert_end(7);
+
+    list.merge_2sorted_lists(list2);
+    list.print();
+    // list.print_reversed();
+
+    string expected = "1 2 3 4 5 6 7";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
 //******************************************************//
 int main()
 {
@@ -760,7 +823,8 @@ int main()
     // test_is_palindrome();
     // test_find_middle();
     // test_swap_forward_and_backward();
-    test_reverse();
+    // test_reverse();
+    test_merge_2sorted_lists();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
