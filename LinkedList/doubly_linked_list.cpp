@@ -431,6 +431,54 @@ public:
         }
         return slow->data;
     }
+
+    void swap_forward_and_backward(int k)
+    {
+        if (length <= 1 || k > length)
+            return;
+
+        Node *start = head, *end = tail;
+
+        if (length == 2)
+        {
+            start->prev = end;
+            end->next = start;
+            start->next = nullptr;
+            end->prev = nullptr;
+            swap(head, tail);
+            return;
+        }
+
+        // length >= 3
+
+        if (k == 1 || k == length)
+        {
+            // swap head and tail
+            start->next->prev = end;
+            end->prev->next = start;
+            start->prev = end->prev;
+            end->next = start->next;
+            start->next = nullptr;
+            end->prev = nullptr;
+            swap(head, tail);
+            return;
+        }
+
+        while (k-- > 1)
+        {
+            start = start->next;
+            end = end->prev;
+        }
+
+        start->prev->next = end;
+        end->prev->next = start;
+
+        start->next->prev = end;
+        end->next->prev = start;
+
+        swap(start->prev, end->prev);
+        swap(start->next, end->next);
+    }
 };
 //******************************************************//
 // test functions
@@ -634,6 +682,32 @@ void test_find_middle()
     }
     list.debug_print_list("********");
 }
+
+void test_swap_forward_and_backward()
+{
+    cout << "\n\ntest9\n";
+    DoublyLinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.insert_end(5);
+    list.insert_end(6);
+
+    list.swap_forward_and_backward(5);
+    list.print();
+    // list.print_reversed();
+
+    string expected = "1 5 3 4 2 6";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
 //******************************************************//
 int main()
 {
@@ -644,7 +718,8 @@ int main()
     // test_delete_even_positions();
     // test_delete_odd_positions();
     // test_is_palindrome();
-    test_find_middle();
+    // test_find_middle();
+    test_swap_forward_and_backward();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
