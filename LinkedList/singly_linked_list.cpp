@@ -329,13 +329,25 @@ public:
 
         return true;
     }
+
+    void swap_pairs()
+    {
+        for (Node *cur = head; cur; cur = cur->next)
+        {
+            if (cur->next)
+            {
+                swap(cur->data, cur->next->data);
+                cur = cur->next;
+            }
+        }
+    }
 };
 
 //******************************************************//
 // test functions
 void test_insert_end()
 {
-    cout << "\n\ntest1\n";
+    cout << "\n\ntest_insert_end\n";
     LinkedList list;
 
     list.insert_end(1);
@@ -356,7 +368,7 @@ void test_insert_end()
 
 void test_insert_front()
 {
-    cout << "\n\ntest2\n";
+    cout << "\n\ntest_insert_front\n";
     LinkedList list;
 
     list.insert_front(1);
@@ -378,7 +390,7 @@ void test_insert_front()
 
 void test_delete_front()
 {
-    cout << "\n\ntest3\n";
+    cout << "\n\ntest_delete_front\n";
     LinkedList list;
 
     list.insert_end(1);
@@ -402,7 +414,7 @@ void test_delete_front()
 
 void test_delete_last()
 {
-    cout << "\n\ntest3\n";
+    cout << "\n\ntest_delete_last\n";
     LinkedList list;
 
     list.insert_end(1);
@@ -426,7 +438,7 @@ void test_delete_last()
 
 void test_delete_nth()
 {
-    cout << "\n\ntest3\n";
+    cout << "\n\ntest_delete_nth\n";
     LinkedList list;
 
     list.insert_end(1);
@@ -450,7 +462,7 @@ void test_delete_nth()
 
 void test_delete_node_with_key()
 {
-    cout << "\n\ntest3\n";
+    cout << "\n\ntest_delete_node_with_key\n";
     LinkedList list;
 
     list.insert_end(1);
@@ -473,7 +485,7 @@ void test_delete_node_with_key()
 
 void test_get_nth()
 {
-    cout << "\n\ntest4\n";
+    cout << "\n\ntest_get_nth\n";
     LinkedList list;
 
     list.insert_end(1);
@@ -499,7 +511,7 @@ void test_get_nth()
 
 void test_is_same()
 {
-    cout << "\n\ntest5\n";
+    cout << "\n\ntest_is_same\n";
     LinkedList list1, list2;
 
     list1.insert_end(1);
@@ -522,6 +534,29 @@ void test_is_same()
     list2.debug_print_list("list2 ********");
 }
 
+void test_swap_pairs()
+{
+    cout << "\n\ntest_swap_pairs\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.insert_end(5);
+    list.swap_pairs();
+    list.print();
+
+    string expected = "2 1 4 3 5";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -532,7 +567,8 @@ int main()
     // test_delete_nth();
     // test_delete_node_with_key();
     // test_get_nth();
-    test_is_same();
+    // test_is_same();
+    test_swap_pairs();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
