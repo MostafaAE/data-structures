@@ -500,6 +500,36 @@ public:
         }
         delete_nth(last_idx);
     }
+
+    void move_to_back(int val)
+    {
+        if (length > 1)
+        {
+            Node *cur = head, *prev = nullptr;
+            int cnt = 1;
+            while (cur && cnt < length)
+            {
+                if (cur->data == val && cur != tail)
+                {
+                    if (cur = head)
+                        head = head->next;
+                    else
+                        prev->next = cur->next;
+
+                    tail->next = cur;
+                    cur = cur->next;
+                    tail = tail->next;
+                    tail->next = nullptr;
+                }
+                else
+                {
+                    prev = cur;
+                    cur = cur->next;
+                }
+                cnt++;
+            }
+        }
+    }
 };
 
 //******************************************************//
@@ -901,6 +931,30 @@ void test_remove_last_occurance()
     list.debug_print_list("********");
 }
 
+void test_move_to_back()
+{
+    cout << "\n\ntest18\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(2);
+    list.insert_end(4);
+    list.insert_end(1);
+    list.move_to_back(1);
+    list.print();
+
+    string expected = "2 3 2 4 1 1";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -919,7 +973,8 @@ int main()
     // test_reverse_recursively();
     // test_left_rotate();
     // test_remove_duplicates();
-    test_remove_last_occurance();
+    // test_remove_last_occurance();
+    test_move_to_back();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
