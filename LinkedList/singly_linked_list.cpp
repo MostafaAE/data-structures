@@ -408,6 +408,29 @@ public:
         else
             head = tail = newNode;
     }
+
+    void swap_head_tail()
+    {
+        if (length <= 1)
+            return;
+
+        if (length == 2)
+        {
+            tail->next = head;
+            head->next = nullptr;
+            swap(head, tail);
+            return;
+        }
+        Node *cur = head;
+
+        while (cur->next != tail)
+            cur = cur->next;
+        // cur is now the last node before tail
+        cur->next = head;
+        tail->next = head->next;
+        head->next = nullptr;
+        swap(head, tail);
+    }
 };
 
 //******************************************************//
@@ -707,6 +730,28 @@ void test_reverse_recursively()
     list.print();
 
     string expected = "4 3 2 1";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
+void swap_head_tail()
+{
+    cout << "\n\nswap_head_tail\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.swap_head_tail();
+    list.print();
+
+    string expected = "4 2 3 1";
     string result = list.debug_to_string();
     if (expected != result)
     {
