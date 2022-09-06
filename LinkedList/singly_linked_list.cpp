@@ -694,6 +694,28 @@ void test_insert_sorted()
     list.debug_print_list("********");
 }
 
+void test_reverse_recursively()
+{
+    cout << "\n\ntest13\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.reverse_recursively();
+    list.print();
+
+    string expected = "4 3 2 1";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -708,7 +730,8 @@ int main()
     // test_swap_pairs();
     // test_reverse();
     // test_delete_even_positions();
-    test_insert_sorted();
+    // test_insert_sorted();
+    test_reverse_recursively();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
