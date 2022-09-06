@@ -227,11 +227,64 @@ public:
         link(node_before, middle);
         link(middle, node_after);
     }
+
+    void insert_sorted(int value)
+    { // O(n) time - O(1) memory
+        // 3 special cases for simplicity
+        if (!length || value <= head->data)
+            insert_front(value);
+        else if (tail->data <= value)
+            insert_end(value);
+        else
+        {
+            // Find the node I am less than. Then I am before it
+            for (Node *cur = head; cur; cur = cur->next)
+            {
+                if (value <= cur->data)
+                {
+                    embed_after(cur->prev, value);
+                    break;
+                }
+            }
+        }
+        debug_verify_data_integrity();
+
+        // This idea is used in Insertion Sort Algorithm
+    }
 };
+//******************************************************//
+// test functions
+void test_insert_sorted()
+{
+    cout << "\n\ntest1\n";
+    DoublyLinkedList list;
+
+    list.insert_end(3);
+    list.insert_end(5);
+    list.insert_end(7);
+    list.insert_sorted(2);
+    list.insert_sorted(9);
+    list.insert_sorted(7);
+    list.insert_sorted(4);
+    list.insert_sorted(1);
+
+    list.print();
+    // list.print_reversed();
+
+    string expected = "1 2 3 4 5 7 7 9";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
 
 //******************************************************//
 int main()
 {
+    test_insert_sorted();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
