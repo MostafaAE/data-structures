@@ -379,6 +379,35 @@ public:
             delete_nth(i);
         }
     }
+
+    void insert_sorted(int val)
+    {
+        Node *newNode = new Node(val);
+        add_node(newNode);
+
+        // if there are elements
+        if (head)
+        {
+            for (Node *cur = head, *prev{}; cur; prev = cur, cur = cur->next)
+            {
+                if (cur->data >= val)
+                {
+                    if (cur == head)
+                        head = newNode;
+                    else
+                        prev->next = newNode;
+
+                    newNode->next = cur;
+
+                    return;
+                }
+            }
+            tail->next = newNode;
+            tail = newNode;
+        }
+        else
+            head = tail = newNode;
+    }
 };
 
 //******************************************************//
@@ -643,6 +672,28 @@ void test_delete_even_positions()
     list.debug_print_list("********");
 }
 
+void test_insert_sorted()
+{
+    cout << "\n\ntest_insert_sorted\n";
+    LinkedList list;
+
+    list.insert_sorted(5);
+    list.insert_sorted(2);
+    list.insert_sorted(3);
+    list.insert_sorted(1);
+    list.insert_sorted(4);
+    list.print();
+
+    string expected = "1 2 3 4 5";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -656,7 +707,8 @@ int main()
     // test_is_same();
     // test_swap_pairs();
     // test_reverse();
-    test_delete_even_positions();
+    // test_delete_even_positions();
+    test_insert_sorted();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
