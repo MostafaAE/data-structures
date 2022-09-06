@@ -630,6 +630,51 @@ public:
         if (carry)
             insert_end(carry);
     }
+
+    void remove_repeated()
+    {
+        if (length >= 2)
+        {
+            Node *cur = head, *prev = nullptr;
+            int repeated_val = cur->data - 1;
+
+            while (cur->next)
+            {
+                if (cur->data == cur->next->data || cur->data == repeated_val)
+                {
+                    repeated_val = cur->data;
+
+                    // delete cur code
+                    // cur could be head or between head & tail
+                    if (cur == head)
+                    {
+                        delete_front();
+                        cur = head;
+                    }
+                    else
+                    {
+                        prev->next = cur->next;
+                        Node *temp = cur->next;
+                        delete_node(cur);
+                        cur = temp;
+                    }
+                }
+
+                else
+                {
+                    prev = cur;
+                    cur = cur->next;
+                }
+            }
+
+            // we have to check the tail and the previous element
+            if (cur->data == repeated_val)
+            {
+                // delete tail
+                delete_last();
+            }
+        }
+    }
 };
 
 //******************************************************//
@@ -1130,7 +1175,7 @@ void test_insert_alternate()
 
 void test_add_big_ints()
 {
-    cout << "\n\ntest22\n";
+    cout << "\n\ntest_add_big_ints\n";
     LinkedList list, list2;
 
     list.insert_end(9);
@@ -1150,6 +1195,31 @@ void test_add_big_ints()
     list.print();
 
     string expected = "7 4 2 5 5 7 8 9";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
+void test_remove_repeated()
+{
+    cout << "\n\ntest_remove_repeated\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(2);
+    list.insert_end(2);
+    list.insert_end(3);
+
+    list.remove_repeated();
+
+    list.print();
+
+    string expected = "1 3";
     string result = list.debug_to_string();
     if (expected != result)
     {
@@ -1182,7 +1252,8 @@ int main()
     // test_find_max_recursively();
     // test_arrange_odd_and_even();
     // test_insert_alternate();
-    test_add_big_ints();
+    // test_add_big_ints();
+    test_remove_repeated();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
