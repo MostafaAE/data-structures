@@ -311,6 +311,24 @@ public:
         }
         return -1;
     }
+
+    bool is_same(LinkedList &list)
+    {
+        Node *cur1 = head, *cur2 = list.head;
+
+        while (cur1 && cur2)
+        {
+            if (cur1->data != cur2->data)
+                return false;
+            cur1 = cur1->next;
+            cur2 = cur2->next;
+        }
+
+        if (cur1 || cur2)
+            return false;
+
+        return true;
+    }
 };
 
 //******************************************************//
@@ -479,6 +497,31 @@ void test_get_nth()
         cout << "nullptr" << endl;
 }
 
+void test_is_same()
+{
+    cout << "\n\ntest5\n";
+    LinkedList list1, list2;
+
+    list1.insert_end(1);
+    list1.insert_end(2);
+    list1.insert_end(3);
+    list2.insert_end(1);
+    list2.insert_end(2);
+    list2.insert_end(3);
+
+    bool expected = true;
+
+    bool result = list1.is_same(list2);
+
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list1.debug_print_list("list1 ********");
+    list2.debug_print_list("list2 ********");
+}
+
 //******************************************************//
 int main()
 {
@@ -488,7 +531,8 @@ int main()
     // test_delete_last();
     // test_delete_nth();
     // test_delete_node_with_key();
-    test_get_nth();
+    // test_get_nth();
+    test_is_same();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
