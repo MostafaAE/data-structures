@@ -407,6 +407,30 @@ public:
         }
         return true;
     }
+
+    int find_middle()
+    {
+        Node *start = head, *end = tail;
+
+        while (start != end && end->prev != start)
+        {
+            start = start->next;
+            end = end->prev;
+        }
+        return end->data;
+    }
+
+    int find_middle_tortoise_hare()
+    {
+        Node *slow = head, *fast = head;
+
+        while (fast && fast->next)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        return slow->data;
+    }
 };
 //******************************************************//
 // test functions
@@ -586,6 +610,30 @@ void test_is_palindrome()
     }
     list.debug_print_list("********");
 }
+
+void test_find_middle()
+{
+    cout << "\n\ntest_find_middle\n";
+    DoublyLinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.insert_end(5);
+    list.insert_end(6);
+    list.print();
+    // list.print_reversed();
+
+    int expected = list.find_middle_tortoise_hare();
+    int result = 4;
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
 //******************************************************//
 int main()
 {
@@ -595,7 +643,8 @@ int main()
     // test_delete_node_with_key();
     // test_delete_even_positions();
     // test_delete_odd_positions();
-    test_is_palindrome();
+    // test_is_palindrome();
+    test_find_middle();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
