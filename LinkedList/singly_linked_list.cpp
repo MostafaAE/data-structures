@@ -565,6 +565,32 @@ public:
             prev = prev->next;
         }
     }
+
+    void insert_alternate(LinkedList &list)
+    {
+        Node *cur1 = head, *cur2 = list.head;
+
+        while (cur1 && cur2)
+        {
+            Node *list1_next = cur1->next, *new_node = new Node(cur2->data);
+
+            cur1->next = new_node;
+            cur1->next->next = list1_next;
+
+            if (cur1 == tail)
+                tail = new_node;
+
+            add_node(cur1->next);
+            cur1 = list1_next;
+            cur2 = cur2->next;
+        }
+
+        while (cur2)
+        {
+            insert_end(cur2->data);
+            cur2 = cur2->next;
+        }
+    }
 };
 
 //******************************************************//
@@ -1016,7 +1042,7 @@ void test_find_max_recursively()
 
 void test_arrange_odd_and_even()
 {
-    cout << "\n\ntest20\n";
+    cout << "\n\ntest_arrange_odd_and_even\n";
     LinkedList list;
 
     list.insert_end(1);
@@ -1039,6 +1065,29 @@ void test_arrange_odd_and_even()
     list.debug_print_list("********");
 }
 
+void test_insert_alternate()
+{
+    cout << "\n\ntest_insert_alternate\n";
+    LinkedList list, list2;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list2.insert_end(6);
+
+    list.insert_alternate(list2);
+
+    list.print();
+
+    string expected = "1 6 2 3";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
 //******************************************************//
 int main()
 {
@@ -1060,7 +1109,8 @@ int main()
     // test_remove_last_occurance();
     // test_move_to_back();
     // test_find_max_recursively();
-    test_arrange_odd_and_even();
+    // test_arrange_odd_and_even();
+    test_insert_alternate();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
