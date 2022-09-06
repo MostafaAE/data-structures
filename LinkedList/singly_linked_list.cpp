@@ -252,6 +252,19 @@ public:
             delete_node(cur);
         }
     }
+
+    void delete_node_with_key(int val)
+    {
+        int idx = 1;
+        for (Node *cur = head; cur; cur = cur->next, idx++)
+        {
+            if (cur->data == val)
+            {
+                delete_nth(idx);
+                break;
+            }
+        }
+    }
 };
 
 //******************************************************//
@@ -371,6 +384,28 @@ void test_delete_nth()
     list.debug_print_list("********");
 }
 
+void test_delete_node_with_key()
+{
+    cout << "\n\ntest3\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.print();
+    list.delete_node_with_key(3);
+    list.print();
+
+    string expected = "1 2 4";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
 //******************************************************//
 int main()
 {
@@ -378,7 +413,8 @@ int main()
     // test_insert_front();
     // test_delete_front();
     // test_delete_last();
-    test_delete_nth();
+    // test_delete_nth();
+    test_delete_node_with_key();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
