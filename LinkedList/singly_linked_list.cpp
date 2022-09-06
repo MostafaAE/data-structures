@@ -675,6 +675,43 @@ public:
             }
         }
     }
+
+    void reverse_chain(int k)
+    {
+        if (k <= 1)
+            return;
+
+        int cnt = 1;
+        Node *last_in_prev_chain{}, *last_in_cur_chain{}, *prev{}, *next{};
+        bool is_first_chain = true;
+        for (Node *cur = head; cur; cur = next, cnt++)
+        {
+            if (cnt % k == 1)
+            {
+                if (is_first_chain)
+                    last_in_prev_chain = last_in_cur_chain = cur;
+                else
+                {
+                    last_in_prev_chain = last_in_cur_chain;
+                    last_in_cur_chain = cur;
+                }
+            }
+
+            // last element in chain
+            if (cnt % k == 0)
+            {
+                if (is_first_chain)
+                    head = cur, is_first_chain = false;
+                else
+                    last_in_prev_chain->next = cur;
+            }
+            next = cur->next;
+            cur->next = prev;
+            prev = cur;
+        }
+        tail = last_in_cur_chain;
+        tail->next = nullptr;
+    }
 };
 
 //******************************************************//
@@ -1229,6 +1266,32 @@ void test_remove_repeated()
     list.debug_print_list("********");
 }
 
+void test_reverse_chain()
+{
+    cout << "\n\ntest24\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.insert_end(5);
+    list.insert_end(6);
+
+    list.reverse_chain(6);
+
+    list.print();
+
+    string expected = "6 5 4 3 2 1";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -1253,7 +1316,8 @@ int main()
     // test_arrange_odd_and_even();
     // test_insert_alternate();
     // test_add_big_ints();
-    test_remove_repeated();
+    // test_remove_repeated();
+    test_reverse_chain();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
