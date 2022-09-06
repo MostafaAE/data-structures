@@ -265,6 +265,25 @@ public:
             }
         }
     }
+
+    Node *get_nth(int n)
+    {
+        int cnt = 0;
+        for (Node *cur = head; cur; cur = cur->next)
+        {
+            if (++cnt == n)
+                return cur;
+        }
+
+        return nullptr;
+    }
+
+    Node *get_nth_back(int n)
+    {
+        if (n > length || n < 1)
+            return nullptr;
+        return get_nth(length - n + 1);
+    }
 };
 
 //******************************************************//
@@ -406,6 +425,33 @@ void test_delete_node_with_key()
     }
     list.debug_print_list("********");
 }
+
+void test_get_nth()
+{
+    cout << "\n\ntest4\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+
+    int expected = 3;
+    Node *res = list.get_nth(3);
+    if (res)
+    {
+        int result = res->data;
+        if (expected != result)
+        {
+            cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+            assert(false);
+        }
+        list.debug_print_list("********");
+    }
+    else
+        cout << "nullptr" << endl;
+}
+
 //******************************************************//
 int main()
 {
@@ -414,7 +460,8 @@ int main()
     // test_delete_front();
     // test_delete_last();
     // test_delete_nth();
-    test_delete_node_with_key();
+    // test_delete_node_with_key();
+    test_get_nth();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
