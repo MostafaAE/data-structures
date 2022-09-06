@@ -128,6 +128,23 @@ public:
             arr[i] = arr[i + 1];
         arr[size - 1] = first_val;
     }
+
+    void right_rotate()
+    {
+        int last_val = arr[size - 1];
+
+        for (int i = size - 1; i > 0; i--)
+            arr[i] = arr[i - 1];
+        arr[0] = last_val;
+    }
+
+    void right_rotate(int times)
+    {
+        times %= size;
+
+        while (times--)
+            right_rotate();
+    }
 };
 
 int main()
