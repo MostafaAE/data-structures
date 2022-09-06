@@ -284,6 +284,33 @@ public:
             return nullptr;
         return get_nth(length - n + 1);
     }
+
+    int search(int val)
+    {
+        int cnt = 0;
+        for (Node *cur = head; cur; cur = cur->next, cnt++)
+        {
+            if (cur->data == val)
+                return cnt;
+        }
+        return -1;
+    }
+    int improved_search(int val)
+    {
+        int cnt = 0;
+        for (Node *cur = head, *prev = nullptr; cur; prev = cur, cur = cur->next, cnt++)
+        {
+            if (cur->data == val)
+            {
+                if (!prev)
+                    return cnt;
+
+                swap(cur->data, prev->data);
+                return cnt - 1;
+            }
+        }
+        return -1;
+    }
 };
 
 //******************************************************//
