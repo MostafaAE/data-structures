@@ -371,6 +371,14 @@ public:
         reverse_recursively(head);
         swap(head, tail);
     }
+
+    void delete_even_positions()
+    {
+        for (int i = 2; i <= length; i++)
+        {
+            delete_nth(i);
+        }
+    }
 };
 
 //******************************************************//
@@ -609,6 +617,32 @@ void test_reverse()
     list.debug_print_list("********");
 }
 
+void test_delete_even_positions()
+{
+    cout << "\n\ntest_delete_even_positions\n";
+    LinkedList list;
+
+    list.insert_end(1);
+    list.insert_end(2);
+    list.insert_end(3);
+    list.insert_end(4);
+    list.insert_end(5);
+    list.insert_end(6);
+    list.insert_end(7);
+    list.insert_end(8);
+    list.delete_even_positions();
+    list.print();
+
+    string expected = "1 3 5 7";
+    string result = list.debug_to_string();
+    if (expected != result)
+    {
+        cout << "no match:\nExpected: " << expected << "\nResult  : " << result << "\n";
+        assert(false);
+    }
+    list.debug_print_list("********");
+}
+
 //******************************************************//
 int main()
 {
@@ -621,7 +655,8 @@ int main()
     // test_get_nth();
     // test_is_same();
     // test_swap_pairs();
-    test_reverse();
+    // test_reverse();
+    test_delete_even_positions();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
