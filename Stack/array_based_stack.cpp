@@ -74,6 +74,16 @@ public:
         insert_at_bottom(value);
         push(cur);
     }
+
+    void reverse()
+    {
+        if (isEmpty())
+            return;
+
+        int cur = pop();
+        reverse();
+        insert_at_bottom(cur);
+    }
 };
 
 int main()
@@ -94,6 +104,9 @@ int main()
 
     stack.insert_at_bottom_iterative(40);
     stack.insert_at_bottom(50);
+    stack.display();
+
+    stack.reverse();
     stack.display();
 
     // must see it, otherwise RTE
