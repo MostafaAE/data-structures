@@ -57,6 +57,20 @@ private:
         print_preorder_complete(node->right);
     }
 
+    void parenthesize(Node *node)
+    {
+        if (!node)
+        {
+            cout << "()";
+            return;
+        }
+        cout << "(";
+        cout << node->data;
+        parenthesize(node->left);
+        parenthesize(node->right);
+        cout << ")";
+    }
+
 public:
     BinaryTree(int root_value)
     {
@@ -144,6 +158,11 @@ public:
         print_preorder_complete(root);
         cout << "\n";
     }
+
+    void parenthesize()
+    {
+        parenthesize(root);
+    }
 };
 
 int main()
@@ -154,6 +173,7 @@ int main()
     bt.add({3}, {'R'});
 
     bt.print_preorder_complete();
+    bt.parenthesize();
     // bt.print_inorder();
     // // Create Nodes
     // Node *root = new Node(1);
