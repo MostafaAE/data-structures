@@ -71,6 +71,26 @@ private:
         cout << ")";
     }
 
+    string parenthesize_canonical(Node *node)
+    {
+        vector<string> v;
+        if (!node)
+            return "()";
+
+        string repr = "(" + to_string(node->data);
+
+        v.push_back(parenthesize_canonical(node->left));
+        v.push_back(parenthesize_canonical(node->right));
+
+        sort(v.begin(), v.end());
+        for (string s : v)
+            repr += s;
+
+        repr += ")";
+
+        return repr;
+    }
+
 public:
     BinaryTree(int root_value)
     {
@@ -163,17 +183,49 @@ public:
     {
         parenthesize(root);
     }
+
+    string parenthesize_canonical()
+    {
+        return parenthesize_canonical(root);
+    }
 };
 
 int main()
 {
-    BinaryTree bt(1);
+    BinaryTree bt1(1), bt2(1), bt3(1);
 
-    bt.add({2}, {'L'});
-    bt.add({3}, {'R'});
+    bt1.add({2, 4}, {'L', 'L'});
+    bt1.add({2, 5}, {'L', 'R'});
+    bt1.add({3, 6}, {'R', 'R'});
 
-    bt.print_preorder_complete();
-    bt.parenthesize();
+    bt2.add({2, 4}, {'R', 'R'});
+    bt2.add({2, 5}, {'R', 'L'});
+    bt2.add({3, 6}, {'L', 'L'});
+
+    bt3.add({2, 4}, {'R', 'R'});
+    bt3.add({2, 5}, {'R', 'L'});
+    bt3.add({3, 6}, {'L', 'R'});
+
+    cout << bt1.parenthesize_canonical() << endl; // (1(2(4()())(5()()))(3()(6()())))
+    cout << bt2.parenthesize_canonical() << endl; // (1(2(4()())(5()()))(3()(6()())))
+    cout << bt3.parenthesize_canonical() << endl; // (1(2(4()())(5()()))(3()(6()())))
+
+    bt1.parenthesize(); // (1(2(4()())(5()()))(3()(6()())))
+    cout << "\n";
+    bt2.parenthesize(); // (1(3(6()())())(2(5()())(4()())))
+    cout << "\n";
+    bt3.parenthesize(); // (1(3()(6()()))(2(5()())(4()())))
+
+    // BinaryTree bt(1);
+
+    // bt.add({2}, {'L'});
+    // bt.add({3}, {'R'});
+
+    // // bt.print_preorder_complete();
+    // // bt.parenthesize();
+
+    // cout << bt.parenthesize_canonical() << endl;
+
     // bt.print_inorder();
     // // Create Nodes
     // Node *root = new Node(1);
