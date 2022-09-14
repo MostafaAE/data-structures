@@ -98,6 +98,35 @@ public:
                 assert(false);
         }
     }
+
+    void level_order()
+    {
+        assert(root);
+
+        queue<pair<Node *, int>> qu;
+        qu.push(make_pair(root, 0));
+        int level = -1;
+        while (!qu.empty())
+        {
+            auto [cur, cur_level] = qu.front();
+            qu.pop();
+
+            // print level
+            if (level != cur_level)
+            {
+                cout << "\nLevel " << cur_level << ": ";
+                level++;
+            }
+
+            cout << cur->data << " ";
+
+            if (cur->left)
+                qu.push(make_pair(cur->left, level + 1));
+            if (cur->right)
+                qu.push(make_pair(cur->right, level + 1));
+        }
+        cout << "\n";
+    }
 };
 
 int main()
@@ -109,7 +138,8 @@ int main()
     bt.add({2, 5, 9}, {'L', 'R', 'R'});
     bt.add({3, 6, 10}, {'R', 'R', 'L'});
 
-    bt.print_inorder();
+    bt.level_order();
+    // bt.print_inorder();
     // // Create Nodes
     // Node *root = new Node(1);
     // Node *node2 = new Node(2);
