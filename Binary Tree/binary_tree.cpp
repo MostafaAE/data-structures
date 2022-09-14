@@ -9,59 +9,129 @@ struct Node
     Node(int data) : data(data){};
 };
 
-void print_preorder(Node *node)
+class BinaryTree
 {
-    if (!node)
-        return;
+private:
+    Node *root{};
 
-    cout << node->data << endl;
-    print_preorder(node->left);
-    print_preorder(node->right);
-}
-void print_postorder(Node *node)
-{
-    if (!node)
-        return;
+    void print_preorder(Node *node)
+    {
+        if (!node)
+            return;
 
-    print_postorder(node->left);
-    print_postorder(node->right);
-    cout << node->data << endl;
-}
+        cout << node->data << " ";
+        print_preorder(node->left);
+        print_preorder(node->right);
+    }
 
-void print_inorder(Node *node)
-{
-    if (!node)
-        return;
+    void print_postorder(Node *node)
+    {
+        if (!node)
+            return;
 
-    print_inorder(node->left);
-    cout << node->data << endl;
-    print_inorder(node->right);
-}
+        print_postorder(node->left);
+        print_postorder(node->right);
+        cout << node->data << " ";
+    }
+
+    void print_inorder(Node *node)
+    {
+        if (!node)
+            return;
+
+        print_inorder(node->left);
+        cout << node->data << " ";
+        print_inorder(node->right);
+    }
+
+public:
+    BinaryTree(int root_value)
+    {
+        root = new Node(root_value);
+    }
+
+    void print_preorder()
+    {
+        print_preorder(root);
+        cout << "\n";
+    }
+
+    void print_postorder()
+    {
+        print_postorder(root);
+        cout << "\n";
+    }
+
+    void print_inorder()
+    {
+        print_inorder(root);
+        cout << "\n";
+    }
+
+    void add(vector<int> values, vector<char> directions)
+    {
+        assert(values.size() == directions.size());
+
+        Node *cur = root;
+        for (int i = 0; i < (int)values.size(); i++)
+        {
+
+            if (directions[i] == 'L')
+            {
+                if (cur->left)
+                    assert(cur->left->data == values[i]);
+                else
+                    cur->left = new Node(values[i]);
+
+                cur = cur->left;
+            }
+            else if (directions[i] == 'R')
+            {
+                if (cur->right)
+                    assert(cur->right->data == values[i]);
+                else
+                    cur->right = new Node(values[i]);
+
+                cur = cur->right;
+            }
+            else
+                assert(false);
+        }
+    }
+};
 
 int main()
 {
-    // Create Nodes
-    Node *root = new Node(1);
-    Node *node2 = new Node(2);
-    Node *node3 = new Node(3);
-    Node *node4 = new Node(4);
-    Node *node5 = new Node(5);
-    Node *node6 = new Node(6);
-    Node *node7 = new Node(7);
-    Node *node8 = new Node(8);
+    BinaryTree bt(1);
 
-    // Link them!
-    root->left = node2;
-    root->right = node3;
+    bt.add({2, 4, 7}, {'L', 'L', 'L'});
+    bt.add({2, 4, 8}, {'L', 'L', 'R'});
+    bt.add({2, 5, 9}, {'L', 'R', 'R'});
+    bt.add({3, 6, 10}, {'R', 'R', 'L'});
 
-    node2->left = node4;
-    node2->right = node5;
+    bt.print_inorder();
+    // // Create Nodes
+    // Node *root = new Node(1);
+    // Node *node2 = new Node(2);
+    // Node *node3 = new Node(3);
+    // Node *node4 = new Node(4);
+    // Node *node5 = new Node(5);
+    // Node *node6 = new Node(6);
+    // Node *node7 = new Node(7);
+    // Node *node8 = new Node(8);
 
-    node5->right = node7;
+    // // Link them!
+    // root->left = node2;
+    // root->right = node3;
 
-    node3->right = node6;
+    // node2->left = node4;
+    // node2->right = node5;
 
-    node6->left = node8;
+    // node5->right = node7;
+
+    // node3->right = node6;
+
+    // node6->left = node8;
 
     // cout << root->left->right->right->data << "\n"; // 7
     // cout << node2->right->right->data << "\n";      // 7
@@ -72,7 +142,7 @@ int main()
     // cout << root->right->right->left->data << "\n"; // 8
     // cout << root->right->right->right << "\n";      // 0x00
 
-    print_preorder(root);
+    // print_preorder(root);
     // must see it, otherwise RTE
     cout
         << "\n\nNO RTE\n";
