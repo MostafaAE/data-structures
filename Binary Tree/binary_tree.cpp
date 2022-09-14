@@ -44,6 +44,19 @@ private:
         print_inorder(node->right);
     }
 
+    void print_preorder_complete(Node *node)
+    {
+        if (!node)
+        {
+            cout << -1 << " ";
+            return;
+        }
+
+        cout << node->data << " ";
+        print_preorder_complete(node->left);
+        print_preorder_complete(node->right);
+    }
+
 public:
     BinaryTree(int root_value)
     {
@@ -59,12 +72,6 @@ public:
     void print_postorder()
     {
         print_postorder(root);
-        cout << "\n";
-    }
-
-    void print_inorder()
-    {
-        print_inorder(root);
         cout << "\n";
     }
 
@@ -131,18 +138,22 @@ public:
         }
         cout << "\n";
     }
+
+    void print_preorder_complete()
+    {
+        print_preorder_complete(root);
+        cout << "\n";
+    }
 };
 
 int main()
 {
     BinaryTree bt(1);
 
-    bt.add({2, 4, 7}, {'L', 'L', 'L'});
-    bt.add({2, 4, 8}, {'L', 'L', 'R'});
-    bt.add({2, 5, 9}, {'L', 'R', 'R'});
-    bt.add({3, 6, 10}, {'R', 'R', 'L'});
+    bt.add({2}, {'L'});
+    bt.add({3}, {'R'});
 
-    bt.level_order();
+    bt.print_preorder_complete();
     // bt.print_inorder();
     // // Create Nodes
     // Node *root = new Node(1);
