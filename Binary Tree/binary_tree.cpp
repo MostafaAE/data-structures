@@ -99,31 +99,35 @@ public:
         }
     }
 
+    // O(n)
     void level_order()
     {
         assert(root);
 
-        queue<pair<Node *, int>> qu;
-        qu.push(make_pair(root, 0));
-        int level = -1;
+        queue<Node *> qu;
+        qu.push(root);
+
+        int level = 0;
+
         while (!qu.empty())
         {
-            auto [cur, cur_level] = qu.front();
-            qu.pop();
+            int sz = (int)qu.size();
 
             // print level
-            if (level != cur_level)
+            cout << "\nLevel " << level++ << ": ";
+
+            while (sz--)
             {
-                cout << "\nLevel " << cur_level << ": ";
-                level++;
+                Node *cur = qu.front();
+                qu.pop();
+
+                cout << cur->data << " ";
+
+                if (cur->left)
+                    qu.push(cur->left);
+                if (cur->right)
+                    qu.push(cur->right);
             }
-
-            cout << cur->data << " ";
-
-            if (cur->left)
-                qu.push(make_pair(cur->left, level + 1));
-            if (cur->right)
-                qu.push(make_pair(cur->right, level + 1));
         }
         cout << "\n";
     }
