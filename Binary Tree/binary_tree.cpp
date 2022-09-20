@@ -237,6 +237,37 @@ public:
         cout << "\n";
     }
 
+    void print_inorder()
+    {
+        print_inorder(root);
+        cout << "\n";
+    }
+
+    void print_inorder_iterative()
+    {
+        if (!root)
+            return;
+
+        stack<Node *> st;
+        st.push(root);
+        bool expanding = 1;
+        while (!st.empty())
+        {
+            if (expanding && st.top()->left)
+                st.push(st.top()->left);
+            else
+            {
+                cout << st.top()->data << " ";
+                Node *temp = st.top()->right;
+                st.pop();
+                expanding = 0;
+                if (temp)
+                    st.push(temp), expanding = 1;
+            }
+        }
+        cout << "\n";
+    }
+
     void add(vector<int> values, vector<char> directions)
     {
         assert(values.size() == directions.size());
@@ -361,14 +392,23 @@ public:
 
 int main()
 {
-
     BinaryTree bt(1);
 
     bt.add({2, 4}, {'L', 'L'});
     bt.add({2, 5}, {'L', 'R'});
     bt.add({3, 6}, {'R', 'L'});
     bt.add({3, 7}, {'R', 'R'});
-    bt.clear();
+    bt.print_inorder();           // 4 2 5 1 6 3 7
+    bt.print_inorder_iterative(); // 4 2 5 1 6 3 7
+
+    // BinaryTree bt(1);
+
+    // bt.add({2, 4}, {'L', 'L'});
+    // bt.add({2, 5}, {'L', 'R'});
+    // bt.add({3, 6}, {'R', 'L'});
+    // bt.add({3, 7}, {'R', 'R'});
+    // bt.clear();
+
     /*
     Node: 4 is deleted
     Node: 5 is deleted
