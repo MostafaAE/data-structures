@@ -152,6 +152,22 @@ private:
         return leaves_count;
     }
 
+    bool is_exist(Node *root, int value)
+    {
+        if (root->data == value)
+            return 1;
+
+        bool exist = 0;
+
+        if (!exist && root->left)
+            exist |= is_exist(root->left, value);
+
+        if (!exist && root->right)
+            exist |= is_exist(root->right, value);
+
+        return exist;
+    }
+
 public:
     BinaryTree(int root_value)
     {
@@ -269,28 +285,48 @@ public:
     {
         return total_leaves(root);
     }
+
+    bool is_exist(int value)
+    {
+        return is_exist(root, value);
+    }
 };
 
 int main()
 {
 
     BinaryTree bt(1);
-
-    cout << bt.total_leaves() << endl; // 1
-
-    bt.add({2}, {'L'});
-    cout << bt.total_leaves() << endl; // 1
-
-    bt.add({3}, {'R'});
-    cout << bt.total_leaves() << endl; // 2
+    cout << bt.is_exist(5) << endl; // 0
 
     bt.add({2, 4}, {'L', 'L'});
-    bt.add({2, 5}, {'L', 'R'});
-    cout << bt.total_leaves() << endl; // 3
+    cout << bt.is_exist(5) << endl; // 0
 
     bt.add({3, 6}, {'R', 'L'});
+    cout << bt.is_exist(5) << endl; // 0
+
+    bt.add({2, 5}, {'L', 'R'});
+    cout << bt.is_exist(5) << endl; // 1
+
     bt.add({3, 7}, {'R', 'R'});
-    cout << bt.total_leaves() << endl; // 4
+    cout << bt.is_exist(5) << endl; // 1
+
+    // BinaryTree bt(1);
+
+    // cout << bt.total_leaves() << endl; // 1
+
+    // bt.add({2}, {'L'});
+    // cout << bt.total_leaves() << endl; // 1
+
+    // bt.add({3}, {'R'});
+    // cout << bt.total_leaves() << endl; // 2
+
+    // bt.add({2, 4}, {'L', 'L'});
+    // bt.add({2, 5}, {'L', 'R'});
+    // cout << bt.total_leaves() << endl; // 3
+
+    // bt.add({3, 6}, {'R', 'L'});
+    // bt.add({3, 7}, {'R', 'R'});
+    // cout << bt.total_leaves() << endl; // 4
 
     // BinaryTree bt(1);
 
