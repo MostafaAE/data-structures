@@ -123,6 +123,19 @@ private:
         return max(height_l, height_r);
     }
 
+    int total_nodes(Node *root)
+    {
+        if (!root)
+            return 0;
+
+        int nodes_count = 1;
+
+        nodes_count += total_nodes(root->left);
+        nodes_count += total_nodes(root->right);
+
+        return nodes_count;
+    }
+
 public:
     BinaryTree(int root_value)
     {
@@ -230,28 +243,46 @@ public:
     {
         return tree_height(root);
     }
+
+    int total_nodes()
+    {
+        return total_nodes(root);
+    }
 };
 
 int main()
 {
     BinaryTree bt(1);
-    cout << bt.tree_height() << endl; // 0
 
-    bt.add({2}, {'L'});
-    cout << bt.tree_height() << endl; // 1
-    bt.add({3}, {'R'});
-    cout << bt.tree_height() << endl; // 1
+    cout << bt.total_nodes() << endl; // 1
 
-    bt.add({3, 6}, {'R', 'L'});
-    cout << bt.tree_height() << endl; // 2
     bt.add({2, 4}, {'L', 'L'});
-    cout << bt.tree_height() << endl; // 2
+    cout << bt.total_nodes() << endl; // 3
 
-    bt.add({2, 4, 5}, {'L', 'L', 'L'});
-    cout << bt.tree_height() << endl; // 3
+    bt.add({2, 5}, {'L', 'R'});
+    cout << bt.total_nodes() << endl; // 4
 
-    bt.add({2, 4, 5, 6}, {'L', 'L', 'L', 'L'});
-    cout << bt.tree_height() << endl; // 4
+    bt.add({3, 6}, {'R', 'R'});
+    cout << bt.total_nodes() << endl; // 6
+
+    // BinaryTree bt(1);
+    // cout << bt.tree_height() << endl; // 0
+
+    // bt.add({2}, {'L'});
+    // cout << bt.tree_height() << endl; // 1
+    // bt.add({3}, {'R'});
+    // cout << bt.tree_height() << endl; // 1
+
+    // bt.add({3, 6}, {'R', 'L'});
+    // cout << bt.tree_height() << endl; // 2
+    // bt.add({2, 4}, {'L', 'L'});
+    // cout << bt.tree_height() << endl; // 2
+
+    // bt.add({2, 4, 5}, {'L', 'L', 'L'});
+    // cout << bt.tree_height() << endl; // 3
+
+    // bt.add({2, 4, 5, 6}, {'L', 'L', 'L', 'L'});
+    // cout << bt.tree_height() << endl; // 4
 
     // BinaryTree bt(1);
     // cout << bt.tree_max() << endl; // 1
