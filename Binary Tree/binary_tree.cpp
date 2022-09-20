@@ -472,6 +472,23 @@ public:
         clear(root);
         root = nullptr;
     }
+
+    void traverse_left_boundry()
+    {
+
+        Node *current = root;
+        while (current)
+        {
+            cout << current->data << " ";
+            if (current->left)
+                current = current->left;
+            else if (current->right)
+                current = current->right;
+            else
+                break;
+        }
+        cout << "\n";
+    }
 };
 
 int main()
@@ -482,8 +499,17 @@ int main()
     bt.add({2, 5}, {'L', 'R'});
     bt.add({3, 6}, {'R', 'L'});
     bt.add({3, 7}, {'R', 'R'});
-    bt.print_postorder();           // 4 5 2 6 7 3 1
-    bt.print_postorder_iterative(); // 4 5 2 6 7 3 1
+
+    bt.traverse_left_boundry();
+
+    // BinaryTree bt(1);
+
+    // bt.add({2, 4}, {'L', 'L'});
+    // bt.add({2, 5}, {'L', 'R'});
+    // bt.add({3, 6}, {'R', 'L'});
+    // bt.add({3, 7}, {'R', 'R'});
+    // bt.print_postorder();           // 4 5 2 6 7 3 1
+    // bt.print_postorder_iterative(); // 4 5 2 6 7 3 1
 
     // BinaryTree bt(1);
 
