@@ -136,6 +136,22 @@ private:
         return nodes_count;
     }
 
+    int total_leaves(Node *root)
+    {
+        // leaf node
+        if (!root->left && !root->right)
+            return 1;
+
+        int leaves_count = 0;
+
+        if (root->left)
+            leaves_count += total_leaves(root->left);
+        if (root->right)
+            leaves_count += total_leaves(root->right);
+
+        return leaves_count;
+    }
+
 public:
     BinaryTree(int root_value)
     {
@@ -248,22 +264,46 @@ public:
     {
         return total_nodes(root);
     }
+
+    int total_leaves()
+    {
+        return total_leaves(root);
+    }
 };
 
 int main()
 {
+
     BinaryTree bt(1);
 
-    cout << bt.total_nodes() << endl; // 1
+    cout << bt.total_leaves() << endl; // 1
+
+    bt.add({2}, {'L'});
+    cout << bt.total_leaves() << endl; // 1
+
+    bt.add({3}, {'R'});
+    cout << bt.total_leaves() << endl; // 2
 
     bt.add({2, 4}, {'L', 'L'});
-    cout << bt.total_nodes() << endl; // 3
-
     bt.add({2, 5}, {'L', 'R'});
-    cout << bt.total_nodes() << endl; // 4
+    cout << bt.total_leaves() << endl; // 3
 
-    bt.add({3, 6}, {'R', 'R'});
-    cout << bt.total_nodes() << endl; // 6
+    bt.add({3, 6}, {'R', 'L'});
+    bt.add({3, 7}, {'R', 'R'});
+    cout << bt.total_leaves() << endl; // 4
+
+    // BinaryTree bt(1);
+
+    // cout << bt.total_nodes() << endl; // 1
+
+    // bt.add({2, 4}, {'L', 'L'});
+    // cout << bt.total_nodes() << endl; // 3
+
+    // bt.add({2, 5}, {'L', 'R'});
+    // cout << bt.total_nodes() << endl; // 4
+
+    // bt.add({3, 6}, {'R', 'R'});
+    // cout << bt.total_nodes() << endl; // 6
 
     // BinaryTree bt(1);
     // cout << bt.tree_height() << endl; // 0
