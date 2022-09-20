@@ -168,6 +168,47 @@ private:
         return exist;
     }
 
+    bool is_perfect(Node *root)
+    {
+        // assert tree is not empty
+        assert(root);
+
+        // leaf node
+        if (!root->left && !root->right)
+            return 1;
+
+        if (root->left && root->right)
+        {
+            int perfect_l = is_perfect(root->left);
+            int perfect_r = is_perfect(root->right);
+
+            if (perfect_l && perfect_r)
+            {
+                int height_l = tree_height(root->left);
+                int height_r = tree_height(root->right);
+                return height_l == height_r;
+            }
+            else
+                return 0;
+        }
+
+        else
+            return 0;
+    }
+
+    bool is_perfect2(Node *root)
+    {
+        // assert tree is not empty
+        assert(root);
+
+        int height = tree_height(root);
+        int nodes_count = total_nodes(root);
+
+        int nodes_from_height = pow(2, height + 1) - 1;
+
+        return nodes_count == nodes_from_height;
+    }
+
 public:
     BinaryTree(int root_value)
     {
@@ -290,25 +331,61 @@ public:
     {
         return is_exist(root, value);
     }
+
+    bool is_perfect()
+    {
+        return is_perfect(root);
+    }
+
+    bool is_perfect2()
+    {
+        return is_perfect2(root);
+    }
 };
 
 int main()
 {
 
     BinaryTree bt(1);
-    cout << bt.is_exist(5) << endl; // 0
+    cout << bt.is_perfect() << endl;  // 1
+    cout << bt.is_perfect2() << endl; // 1
+    bt.add({2}, {'L'});
+    cout << bt.is_perfect() << endl;  // 0
+    cout << bt.is_perfect2() << endl; // 0
 
+    bt.add({3}, {'R'});
+    cout << bt.is_perfect() << endl;  // 1
+    cout << bt.is_perfect2() << endl; // 1
     bt.add({2, 4}, {'L', 'L'});
-    cout << bt.is_exist(5) << endl; // 0
+    cout << bt.is_perfect() << endl;  // 0
+    cout << bt.is_perfect2() << endl; // 0
 
     bt.add({3, 6}, {'R', 'L'});
-    cout << bt.is_exist(5) << endl; // 0
+    cout << bt.is_perfect() << endl;  // 0
+    cout << bt.is_perfect2() << endl; // 0
 
     bt.add({2, 5}, {'L', 'R'});
-    cout << bt.is_exist(5) << endl; // 1
+    cout << bt.is_perfect() << endl;  // 0
+    cout << bt.is_perfect2() << endl; // 0
 
     bt.add({3, 7}, {'R', 'R'});
-    cout << bt.is_exist(5) << endl; // 1
+    cout << bt.is_perfect() << endl;  // 1
+    cout << bt.is_perfect2() << endl; // 1
+
+    // BinaryTree bt(1);
+    // cout << bt.is_exist(5) << endl; // 0
+
+    // bt.add({2, 4}, {'L', 'L'});
+    // cout << bt.is_exist(5) << endl; // 0
+
+    // bt.add({3, 6}, {'R', 'L'});
+    // cout << bt.is_exist(5) << endl; // 0
+
+    // bt.add({2, 5}, {'L', 'R'});
+    // cout << bt.is_exist(5) << endl; // 1
+
+    // bt.add({3, 7}, {'R', 'R'});
+    // cout << bt.is_exist(5) << endl; // 1
 
     // BinaryTree bt(1);
 
