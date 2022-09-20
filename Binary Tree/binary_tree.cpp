@@ -265,6 +265,34 @@ public:
         cout << "\n";
     }
 
+    void print_postorder_iterative()
+    {
+
+        stack<pair<Node *, bool>> nodes;
+        nodes.push(make_pair(root, false));
+
+        while (!nodes.empty())
+        {
+            Node *current = nodes.top().first;
+            bool is_done = nodes.top().second;
+            nodes.pop();
+
+            if (is_done)
+                cout << current->data << " ";
+            else
+            {
+                nodes.push(make_pair(current, true));
+
+                if (current->right)
+                    nodes.push(make_pair(current->right, false));
+
+                if (current->left)
+                    nodes.push(make_pair(current->left, false));
+            }
+        }
+        cout << "\n";
+    }
+
     void print_inorder()
     {
         print_inorder(root);
@@ -454,8 +482,8 @@ int main()
     bt.add({2, 5}, {'L', 'R'});
     bt.add({3, 6}, {'R', 'L'});
     bt.add({3, 7}, {'R', 'R'});
-    bt.print_preorder();           // 1 2 4 5 3 6 7
-    bt.print_preorder_iterative(); // 1 2 4 5 3 6 7
+    bt.print_postorder();           // 4 5 2 6 7 3 1
+    bt.print_postorder_iterative(); // 4 5 2 6 7 3 1
 
     // BinaryTree bt(1);
 
