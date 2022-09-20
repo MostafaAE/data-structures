@@ -268,6 +268,34 @@ public:
         cout << "\n";
     }
 
+    void print_inorder_iterative2()
+    {
+
+        stack<pair<Node *, bool>> nodes;
+        nodes.push(make_pair(root, false));
+
+        while (!nodes.empty())
+        {
+            Node *current = nodes.top().first;
+            bool is_done = nodes.top().second;
+            nodes.pop();
+
+            if (is_done)
+                cout << current->data << " ";
+            else
+            {
+                if (current->right)
+                    nodes.push(make_pair(current->right, false));
+
+                nodes.push(make_pair(current, true));
+
+                if (current->left)
+                    nodes.push(make_pair(current->left, false));
+            }
+        }
+        cout << "\n";
+    }
+
     void add(vector<int> values, vector<char> directions)
     {
         assert(values.size() == directions.size());
@@ -398,8 +426,8 @@ int main()
     bt.add({2, 5}, {'L', 'R'});
     bt.add({3, 6}, {'R', 'L'});
     bt.add({3, 7}, {'R', 'R'});
-    bt.print_inorder();           // 4 2 5 1 6 3 7
-    bt.print_inorder_iterative(); // 4 2 5 1 6 3 7
+    bt.print_inorder();            // 4 2 5 1 6 3 7
+    bt.print_inorder_iterative2(); // 4 2 5 1 6 3 7
 
     // BinaryTree bt(1);
 
