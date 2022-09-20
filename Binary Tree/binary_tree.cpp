@@ -7,6 +7,10 @@ struct Node
     Node *left{}, *right{};
 
     Node(int data) : data(data){};
+    ~Node()
+    {
+        cout << "Node: " << data << " is deleted" << endl;
+    }
 };
 
 class BinaryTree
@@ -200,10 +204,25 @@ private:
         return nodes_count == nodes_from_height;
     }
 
+    void clear(Node *root)
+    {
+        if (!root)
+            return;
+
+        clear(root->left);
+        clear(root->right);
+
+        delete root;
+    }
+
 public:
     BinaryTree(int root_value)
     {
         root = new Node(root_value);
+    }
+    ~BinaryTree()
+    {
+        clear();
     }
 
     void print_preorder()
@@ -332,36 +351,59 @@ public:
     {
         return is_perfect_formula(root);
     }
+
+    void clear()
+    {
+        clear(root);
+        root = nullptr;
+    }
 };
 
 int main()
 {
 
     BinaryTree bt(1);
-    cout << bt.is_perfect() << endl;         // 1
-    cout << bt.is_perfect_formula() << endl; // 1
-    bt.add({2}, {'L'});
-    cout << bt.is_perfect() << endl;         // 0
-    cout << bt.is_perfect_formula() << endl; // 0
 
-    bt.add({3}, {'R'});
-    cout << bt.is_perfect() << endl;         // 1
-    cout << bt.is_perfect_formula() << endl; // 1
     bt.add({2, 4}, {'L', 'L'});
-    cout << bt.is_perfect() << endl;         // 0
-    cout << bt.is_perfect_formula() << endl; // 0
-
-    bt.add({3, 6}, {'R', 'L'});
-    cout << bt.is_perfect() << endl;         // 0
-    cout << bt.is_perfect_formula() << endl; // 0
-
     bt.add({2, 5}, {'L', 'R'});
-    cout << bt.is_perfect() << endl;         // 0
-    cout << bt.is_perfect_formula() << endl; // 0
-
+    bt.add({3, 6}, {'R', 'L'});
     bt.add({3, 7}, {'R', 'R'});
-    cout << bt.is_perfect() << endl;         // 1
-    cout << bt.is_perfect_formula() << endl; // 1
+    bt.clear();
+    /*
+    Node: 4 is deleted
+    Node: 5 is deleted
+    Node: 2 is deleted
+    Node: 6 is deleted
+    Node: 7 is deleted
+    Node: 3 is deleted
+    Node: 1 is deleted
+    */
+
+    // BinaryTree bt(1);
+    // cout << bt.is_perfect() << endl;         // 1
+    // cout << bt.is_perfect_formula() << endl; // 1
+    // bt.add({2}, {'L'});
+    // cout << bt.is_perfect() << endl;         // 0
+    // cout << bt.is_perfect_formula() << endl; // 0
+
+    // bt.add({3}, {'R'});
+    // cout << bt.is_perfect() << endl;         // 1
+    // cout << bt.is_perfect_formula() << endl; // 1
+    // bt.add({2, 4}, {'L', 'L'});
+    // cout << bt.is_perfect() << endl;         // 0
+    // cout << bt.is_perfect_formula() << endl; // 0
+
+    // bt.add({3, 6}, {'R', 'L'});
+    // cout << bt.is_perfect() << endl;         // 0
+    // cout << bt.is_perfect_formula() << endl; // 0
+
+    // bt.add({2, 5}, {'L', 'R'});
+    // cout << bt.is_perfect() << endl;         // 0
+    // cout << bt.is_perfect_formula() << endl; // 0
+
+    // bt.add({3, 7}, {'R', 'R'});
+    // cout << bt.is_perfect() << endl;         // 1
+    // cout << bt.is_perfect_formula() << endl; // 1
 
     // BinaryTree bt(1);
     // cout << bt.is_exist(5) << endl; // 0
