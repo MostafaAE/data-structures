@@ -168,35 +168,26 @@ private:
         return exist;
     }
 
-    bool is_perfect(Node *root)
+    bool is_perfect(Node *root, int h = -1)
     {
         // assert tree is not empty
         assert(root);
 
-        // leaf node
+        // first call
+        if (h == -1)
+            h = tree_height(root);
+
+        // leaf node (make sure all leaves are of the same level)
         if (!root->left && !root->right)
-            return 1;
+            return h == 0;
 
-        if (root->left && root->right)
-        {
-            int perfect_l = is_perfect(root->left);
-            int perfect_r = is_perfect(root->right);
-
-            if (perfect_l && perfect_r)
-            {
-                int height_l = tree_height(root->left);
-                int height_r = tree_height(root->right);
-                return height_l == height_r;
-            }
-            else
-                return 0;
-        }
-
-        else
+        if ((!root->left && root->right) || (root->left && !root->right))
             return 0;
+
+        return is_perfect(root->left, h - 1) && is_perfect(root->right, h - 1);
     }
 
-    bool is_perfect2(Node *root)
+    bool is_perfect_formula(Node *root)
     {
         // assert tree is not empty
         assert(root);
@@ -337,9 +328,9 @@ public:
         return is_perfect(root);
     }
 
-    bool is_perfect2()
+    bool is_perfect_formula()
     {
-        return is_perfect2(root);
+        return is_perfect_formula(root);
     }
 };
 
@@ -347,30 +338,30 @@ int main()
 {
 
     BinaryTree bt(1);
-    cout << bt.is_perfect() << endl;  // 1
-    cout << bt.is_perfect2() << endl; // 1
+    cout << bt.is_perfect() << endl;         // 1
+    cout << bt.is_perfect_formula() << endl; // 1
     bt.add({2}, {'L'});
-    cout << bt.is_perfect() << endl;  // 0
-    cout << bt.is_perfect2() << endl; // 0
+    cout << bt.is_perfect() << endl;         // 0
+    cout << bt.is_perfect_formula() << endl; // 0
 
     bt.add({3}, {'R'});
-    cout << bt.is_perfect() << endl;  // 1
-    cout << bt.is_perfect2() << endl; // 1
+    cout << bt.is_perfect() << endl;         // 1
+    cout << bt.is_perfect_formula() << endl; // 1
     bt.add({2, 4}, {'L', 'L'});
-    cout << bt.is_perfect() << endl;  // 0
-    cout << bt.is_perfect2() << endl; // 0
+    cout << bt.is_perfect() << endl;         // 0
+    cout << bt.is_perfect_formula() << endl; // 0
 
     bt.add({3, 6}, {'R', 'L'});
-    cout << bt.is_perfect() << endl;  // 0
-    cout << bt.is_perfect2() << endl; // 0
+    cout << bt.is_perfect() << endl;         // 0
+    cout << bt.is_perfect_formula() << endl; // 0
 
     bt.add({2, 5}, {'L', 'R'});
-    cout << bt.is_perfect() << endl;  // 0
-    cout << bt.is_perfect2() << endl; // 0
+    cout << bt.is_perfect() << endl;         // 0
+    cout << bt.is_perfect_formula() << endl; // 0
 
     bt.add({3, 7}, {'R', 'R'});
-    cout << bt.is_perfect() << endl;  // 1
-    cout << bt.is_perfect2() << endl; // 1
+    cout << bt.is_perfect() << endl;         // 1
+    cout << bt.is_perfect_formula() << endl; // 1
 
     // BinaryTree bt(1);
     // cout << bt.is_exist(5) << endl; // 0
