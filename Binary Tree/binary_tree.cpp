@@ -245,6 +245,21 @@ private:
         delete root;
     }
 
+    void level_order_recursive(Node *node, int level)
+    {
+        if (!node)
+            return;
+
+        if (level == 0)
+        {
+            cout << node->data << " ";
+            return;
+        }
+
+        level_order_recursive(node->left, level - 1);
+        level_order_recursive(node->right, level - 1);
+    }
+
 public:
     BinaryTree(int root_value)
     {
@@ -484,6 +499,18 @@ public:
         cout << "\n";
     }
 
+    // O(n^2)
+    void level_order_recursive()
+    {
+        int height = tree_height(root);
+
+        for (int level = 0; level <= height; level++)
+        {
+            level_order_recursive(root, level);
+            cout << "\n";
+        }
+    }
+
     void print_preorder_complete()
     {
         print_preorder_complete(root);
@@ -561,9 +588,18 @@ public:
 
 int main()
 {
-    BinaryTree bt("534*2^+");
-    bt.print_postfix_expression();
-    bt.print_inorder_expression();
+    BinaryTree bt(1);
+
+    bt.add({2, 4}, {'L', 'L'});
+    bt.add({2, 5}, {'L', 'R'});
+    bt.add({3, 6}, {'R', 'L'});
+    bt.add({3, 7}, {'R', 'R'});
+
+    bt.level_order_recursive();
+
+    // BinaryTree bt("534*2^+");
+    // bt.print_postfix_expression();
+    // bt.print_inorder_expression();
 
     // BinaryTree bt(1);
 
