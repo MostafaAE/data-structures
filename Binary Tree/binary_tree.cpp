@@ -38,6 +38,16 @@ private:
         cout << node->data << " ";
     }
 
+    void print_postorder_expression(Node *node)
+    {
+        if (!node)
+            return;
+
+        print_postorder_expression(node->left);
+        print_postorder_expression(node->right);
+        cout << (char)node->data;
+    }
+
     void print_inorder(Node *node)
     {
         if (!node)
@@ -220,6 +230,32 @@ public:
     {
         root = new Node(root_value);
     }
+
+    BinaryTree(string postfix)
+    {
+        // build an expression tree based on the given postfix expression
+        // 23+4*
+        stack<Node *> operands;
+        for (char c : postfix)
+        {
+            Node *elem = new Node(c);
+
+            // operator
+            if (!isdigit(c))
+            {
+                assert(operands.size() >= 2);
+
+                elem->right = operands.top();
+                operands.pop();
+                elem->left = operands.top();
+                operands.pop();
+            }
+
+            operands.push(elem);
+        }
+        root = operands.top();
+    }
+
     ~BinaryTree()
     {
         clear();
@@ -262,6 +298,12 @@ public:
     void print_postorder()
     {
         print_postorder(root);
+        cout << "\n";
+    }
+
+    void print_postfix_expression()
+    {
+        print_postorder_expression(root);
         cout << "\n";
     }
 
@@ -493,14 +535,17 @@ public:
 
 int main()
 {
-    BinaryTree bt(1);
+    BinaryTree bt("23+4*");
+    bt.print_postfix_expression();
 
-    bt.add({2, 4}, {'L', 'L'});
-    bt.add({2, 5}, {'L', 'R'});
-    bt.add({3, 6}, {'R', 'L'});
-    bt.add({3, 7}, {'R', 'R'});
+    // BinaryTree bt(1);
 
-    bt.traverse_left_boundry();
+    // bt.add({2, 4}, {'L', 'L'});
+    // bt.add({2, 5}, {'L', 'R'});
+    // bt.add({3, 6}, {'R', 'L'});
+    // bt.add({3, 7}, {'R', 'R'});
+
+    // bt.traverse_left_boundry();
 
     // BinaryTree bt(1);
 
