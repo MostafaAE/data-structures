@@ -58,6 +58,26 @@ private:
         print_inorder(node->right);
     }
 
+    void print_inorder_expression(Node *node)
+    {
+
+        // operand
+        if (!isdigit(node->data))
+            cout << "(";
+
+        if (node->left)
+            print_inorder_expression(node->left);
+
+        cout << (char)node->data;
+
+        if (node->right)
+            print_inorder_expression(node->right);
+
+        // operand
+        if (!isdigit(node->data))
+            cout << ")";
+    }
+
     void print_preorder_complete(Node *node)
     {
         if (!node)
@@ -341,6 +361,12 @@ public:
         cout << "\n";
     }
 
+    void print_inorder_expression()
+    {
+        print_inorder_expression(root);
+        cout << "\n";
+    }
+
     void print_inorder_iterative()
     {
         if (!root)
@@ -535,8 +561,9 @@ public:
 
 int main()
 {
-    BinaryTree bt("23+4*");
+    BinaryTree bt("534*2^+");
     bt.print_postfix_expression();
+    bt.print_inorder_expression();
 
     // BinaryTree bt(1);
 
