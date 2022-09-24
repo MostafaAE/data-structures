@@ -291,6 +291,29 @@ public:
         root = operands.top();
     }
 
+    BinaryTree(queue<pair<int, int>> &preorder_queue)
+    {
+        root = generateFullBinaryTree(preorder_queue);
+    }
+
+    Node *generateFullBinaryTree(queue<pair<int, int>> &preorder_queue)
+    {
+        assert(!preorder_queue.empty());
+
+        auto [node_value, is_leaf] = preorder_queue.front();
+        preorder_queue.pop();
+
+        Node *node = new Node(node_value);
+
+        // each node in a full binary tree is either a leaf or have 2 children
+        if (!is_leaf)
+        {
+            node->left = generateFullBinaryTree(preorder_queue);
+            node->right = generateFullBinaryTree(preorder_queue);
+        }
+        return node;
+    }
+
     ~BinaryTree()
     {
         clear();
@@ -588,14 +611,28 @@ public:
 
 int main()
 {
-    BinaryTree bt(1);
+    queue<pair<int, int>> preorder_queue;
 
-    bt.add({2, 4}, {'L', 'L'});
-    bt.add({2, 5}, {'L', 'R'});
-    bt.add({3, 6}, {'R', 'L'});
-    bt.add({3, 7}, {'R', 'R'});
+    preorder_queue.push(make_pair(1, 0));
+    preorder_queue.push(make_pair(2, 0));
+    preorder_queue.push(make_pair(4, 1));
+    preorder_queue.push(make_pair(5, 1));
+    preorder_queue.push(make_pair(3, 0));
+    preorder_queue.push(make_pair(6, 1));
+    preorder_queue.push(make_pair(7, 1));
 
-    bt.level_order_recursive();
+    BinaryTree bt(preorder_queue);
+
+    bt.print_preorder();
+
+    // BinaryTree bt(1);
+
+    // bt.add({2, 4}, {'L', 'L'});
+    // bt.add({2, 5}, {'L', 'R'});
+    // bt.add({3, 6}, {'R', 'L'});
+    // bt.add({3, 7}, {'R', 'R'});
+
+    // bt.level_order_recursive();
 
     // BinaryTree bt("534*2^+");
     // bt.print_postfix_expression();
