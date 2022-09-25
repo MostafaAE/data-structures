@@ -139,6 +139,20 @@ private:
         delete root;
     }
 
+    bool search(Node *node, int val)
+    {
+        if (!node)
+            return nullptr;
+
+        if (node->val == val)
+            return root;
+
+        if (val < node->val)
+            return search(node->left, val);
+
+        return search(node->right, val);
+    }
+
 public:
     BinarySearchTree(int root_value)
     {
@@ -230,6 +244,31 @@ public:
     {
         clear(root);
         root = nullptr;
+    }
+
+    // iterative
+    bool search(int val)
+    {
+
+        while (root)
+        {
+            if (root->data == val)
+                return true;
+
+            else if (val < root->data)
+                root = root->left;
+
+            else
+                root = root->right;
+        }
+        return false;
+    }
+
+    // recursive
+    bool search(int val)
+    {
+        assert(root);
+        return search(root, val);
     }
 };
 
