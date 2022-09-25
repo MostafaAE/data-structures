@@ -199,7 +199,24 @@ private:
         return left_bst && right_bst;
     }
 
+    Node *build_balanced_bst(vector<int> &nums, int start, int end)
+    {
+        if (start > end)
+            return nullptr;
+
+        int mid = (start + end) / 2;
+
+        Node *node = new Node(nums[mid]);
+
+        node->left = build_balanced_bst(nums, start, mid - 1);
+        node->right = build_balanced_bst(nums, mid + 1, end);
+
+        return node;
+    }
+
 public:
+    BinarySearchTree() {}
+
     BinarySearchTree(int root_value)
     {
         root = new Node(root_value);
@@ -356,21 +373,32 @@ public:
     {
         return is_bst(root);
     }
+
+    void build_balanced_bst(vector<int> &nums)
+    {
+        root = build_balanced_bst(nums, 0, nums.size() - 1);
+    }
 };
 
 int main()
 {
-    BinarySearchTree bst(40);
+    BinarySearchTree bst;
+    int arr[] = {10, 20, 30, 40, 50, 60, 70};
+    vector<int> v(arr, arr + 7);
+    bst.build_balanced_bst(v);
+    bst.print_inorder();
 
-    bst.insert(30);
-    bst.insert(50);
-    bst.insert(10);
-    bst.insert(20);
-    bst.insert(50);
-    bst.insert(60);
-    bst.insert(70);
+    // BinarySearchTree bst(40);
 
-    cout << bst.is_bst() << endl;
+    // bst.insert(30);
+    // bst.insert(50);
+    // bst.insert(10);
+    // bst.insert(20);
+    // bst.insert(50);
+    // bst.insert(60);
+    // bst.insert(70);
+
+    // cout << bst.is_bst() << endl;
 
     // bst.print_inorder(); // 10 20 30 40 50 60 70
 
