@@ -171,6 +171,34 @@ private:
         }
     }
 
+    bool is_bst(Node *node, int mn = INT_MIN, int mx = INT_MAX)
+    {
+        bool status = mn < node->data && node->data < mx;
+
+        if (!status)
+            return false;
+
+        bool left_bst{1}, right_bst{1};
+
+        if (node->left)
+        {
+            if (node->data > node->left->data)
+                left_bst = is_bst(node->left, mn, node->data);
+            else
+                left_bst = false;
+        }
+
+        if (left_bst && node->right)
+        {
+            if (node->data < node->right->data)
+                right_bst = is_bst(node->right, node->data, mx);
+            else
+                right_bst = false;
+        }
+
+        return left_bst && right_bst;
+    }
+
 public:
     BinarySearchTree(int root_value)
     {
@@ -267,7 +295,6 @@ public:
     // iterative search
     bool search_iterative(int val)
     {
-
         while (root)
         {
             if (root->data == val)
@@ -324,6 +351,11 @@ public:
     {
         insert(root, val);
     }
+
+    bool is_bst()
+    {
+        return is_bst(root);
+    }
 };
 
 int main()
@@ -338,14 +370,16 @@ int main()
     bst.insert(60);
     bst.insert(70);
 
-    bst.print_inorder(); // 10 20 30 40 50 60 70
+    cout << bst.is_bst() << endl;
 
-    bst.print_preorder(); // 40 30 10 20 50 60 70
+    // bst.print_inorder(); // 10 20 30 40 50 60 70
 
-    cout << bst.search(10) << endl; // true
-    cout << bst.search(70) << endl; // true
-    cout << bst.search(0) << endl;  // false
-    cout << bst.search(80) << endl; // false
+    // bst.print_preorder(); // 40 30 10 20 50 60 70
+
+    // cout << bst.search(10) << endl; // true
+    // cout << bst.search(70) << endl; // true
+    // cout << bst.search(0) << endl;  // false
+    // cout << bst.search(80) << endl; // false
     // must see it, otherwise RTE
     cout
         << "\n\nNO RTE\n";
