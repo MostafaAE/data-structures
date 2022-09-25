@@ -233,6 +233,17 @@ private:
         return -1;
     }
 
+    int lowestCommonAncestor(Node *node, int p, int q)
+    {
+
+        if (node->data > p && node->data > q)
+            return lowestCommonAncestor(root->left, p, q);
+        if (node->data < p && node->data < q)
+            return lowestCommonAncestor(node->right, p, q);
+
+        return node->data;
+    }
+
 public:
     BinarySearchTree() {}
 
@@ -402,20 +413,41 @@ public:
     {
         return kthSmallest(root, k);
     }
+
+    int lowestCommonAncestor(int p, int q)
+    {
+
+        return lowestCommonAncestor(root, p, q);
+    }
 };
 
 int main()
 {
-    BinarySearchTree bst(20);
+    BinarySearchTree bst(40);
 
+    bst.insert(30);
+    bst.insert(50);
     bst.insert(10);
-    bst.insert(80);
-    bst.insert(15);
-    cout << bst.kthSmallest(1) << endl;
-    cout << bst.kthSmallest(2) << endl;
-    cout << bst.kthSmallest(3) << endl;
-    cout << bst.kthSmallest(4) << endl;
-    cout << bst.kthSmallest(6) << endl;
+    bst.insert(35);
+    bst.insert(45);
+    bst.insert(60);
+
+    cout << bst.lowestCommonAncestor(30, 50) << endl; // 40
+    cout << bst.lowestCommonAncestor(10, 35) << endl; // 30
+    cout << bst.lowestCommonAncestor(45, 60) << endl; // 50
+    cout << bst.lowestCommonAncestor(60, 50) << endl; // 50
+    cout << bst.lowestCommonAncestor(60, 10) << endl; // 40
+
+    // BinarySearchTree bst(20);
+
+    // bst.insert(10);
+    // bst.insert(80);
+    // bst.insert(15);
+    // cout << bst.kthSmallest(1) << endl; // 10
+    // cout << bst.kthSmallest(2) << endl; // 15
+    // cout << bst.kthSmallest(3) << endl; // 20
+    // cout << bst.kthSmallest(4) << endl; // 80
+    // cout << bst.kthSmallest(6) << endl; // -1
 
     // BinarySearchTree bst;
     // int arr[] = {10, 20, 30, 40, 50, 60, 70};
