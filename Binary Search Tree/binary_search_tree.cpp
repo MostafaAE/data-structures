@@ -142,15 +142,33 @@ private:
     bool search(Node *node, int val)
     {
         if (!node)
-            return nullptr;
+            return false;
 
-        if (node->val == val)
+        if (node->data == val)
             return root;
 
-        if (val < node->val)
+        if (val < node->data)
             return search(node->left, val);
 
         return search(node->right, val);
+    }
+
+    void insert(Node *node, int val)
+    {
+        if (val < node->data)
+        {
+            if (node->left)
+                insert(node->left, val);
+            else
+                node->left = new Node(val);
+        }
+        else if (val > node->data)
+        {
+            if (node->right)
+                insert(node->right, val);
+            else
+                node->right = new Node(val);
+        }
     }
 
 public:
@@ -246,8 +264,8 @@ public:
         root = nullptr;
     }
 
-    // iterative
-    bool search(int val)
+    // iterative search
+    bool search_iterative(int val)
     {
 
         while (root)
@@ -264,17 +282,70 @@ public:
         return false;
     }
 
-    // recursive
+    // recursive search
     bool search(int val)
     {
         assert(root);
         return search(root, val);
     }
+
+    // iterative insert
+    void insert_iterative(int val)
+    {
+        Node *cur = root;
+
+        while (true)
+        {
+            if (val < cur->data)
+            {
+                if (cur->left)
+                    cur = cur->left;
+                else
+                {
+                    cur->left = new Node(val);
+                    return;
+                }
+            }
+
+            else if (val > cur->data)
+            {
+                if (cur->right)
+                    cur = cur->right;
+                else
+                {
+                    cur->right = new Node(val);
+                    return;
+                }
+            }
+        }
+    }
+
+    void insert(int val)
+    {
+        insert(root, val);
+    }
 };
 
 int main()
 {
+    BinarySearchTree bst(40);
 
+    bst.insert(30);
+    bst.insert(50);
+    bst.insert(10);
+    bst.insert(20);
+    bst.insert(50);
+    bst.insert(60);
+    bst.insert(70);
+
+    bst.print_inorder(); // 10 20 30 40 50 60 70
+
+    bst.print_preorder(); // 40 30 10 20 50 60 70
+
+    cout << bst.search(10) << endl; // true
+    cout << bst.search(70) << endl; // true
+    cout << bst.search(0) << endl;  // false
+    cout << bst.search(80) << endl; // false
     // must see it, otherwise RTE
     cout
         << "\n\nNO RTE\n";
