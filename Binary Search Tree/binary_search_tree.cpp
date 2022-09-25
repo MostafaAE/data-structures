@@ -214,6 +214,25 @@ private:
         return node;
     }
 
+    int kthSmallest(Node *node, int &k)
+    {
+        if (node->left)
+        {
+            int res = kthSmallest(node->left, k);
+            if (k == 0)
+                return res;
+        }
+
+        k--;
+        if (k == 0)
+            return node->data;
+
+        if (node->right)
+            return kthSmallest(node->right, k);
+
+        return -1;
+    }
+
 public:
     BinarySearchTree() {}
 
@@ -378,15 +397,31 @@ public:
     {
         root = build_balanced_bst(nums, 0, nums.size() - 1);
     }
+
+    int kthSmallest(int k)
+    {
+        return kthSmallest(root, k);
+    }
 };
 
 int main()
 {
-    BinarySearchTree bst;
-    int arr[] = {10, 20, 30, 40, 50, 60, 70};
-    vector<int> v(arr, arr + 7);
-    bst.build_balanced_bst(v);
-    bst.print_inorder();
+    BinarySearchTree bst(20);
+
+    bst.insert(10);
+    bst.insert(80);
+    bst.insert(15);
+    cout << bst.kthSmallest(1) << endl;
+    cout << bst.kthSmallest(2) << endl;
+    cout << bst.kthSmallest(3) << endl;
+    cout << bst.kthSmallest(4) << endl;
+    cout << bst.kthSmallest(6) << endl;
+
+    // BinarySearchTree bst;
+    // int arr[] = {10, 20, 30, 40, 50, 60, 70};
+    // vector<int> v(arr, arr + 7);
+    // bst.build_balanced_bst(v);
+    // bst.print_inorder();
 
     // BinarySearchTree bst(40);
 
