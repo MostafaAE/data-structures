@@ -145,7 +145,7 @@ private:
             return false;
 
         if (node->data == val)
-            return root;
+            return true;
 
         if (val < node->data)
             return search(node->left, val);
@@ -242,6 +242,16 @@ private:
             return lowestCommonAncestor(node->right, p, q);
 
         return node->data;
+    }
+
+    // O(h)
+    int min_value(Node *node)
+    {
+        Node *cur = node;
+        while (cur && cur->left)
+            cur = cur->left;
+
+        return cur->data;
     }
 
 public:
@@ -419,10 +429,17 @@ public:
 
         return lowestCommonAncestor(root, p, q);
     }
+
+    // O(h)
+    int min_value()
+    {
+        return min_value(root);
+    }
 };
 
 int main()
 {
+
     BinarySearchTree bst(40);
 
     bst.insert(30);
@@ -432,11 +449,22 @@ int main()
     bst.insert(45);
     bst.insert(60);
 
-    cout << bst.lowestCommonAncestor(30, 50) << endl; // 40
-    cout << bst.lowestCommonAncestor(10, 35) << endl; // 30
-    cout << bst.lowestCommonAncestor(45, 60) << endl; // 50
-    cout << bst.lowestCommonAncestor(60, 50) << endl; // 50
-    cout << bst.lowestCommonAncestor(60, 10) << endl; // 40
+    cout << bst.min_value() << endl; // 10
+
+    // BinarySearchTree bst(40);
+
+    // bst.insert(30);
+    // bst.insert(50);
+    // bst.insert(10);
+    // bst.insert(35);
+    // bst.insert(45);
+    // bst.insert(60);
+
+    // cout << bst.lowestCommonAncestor(30, 50) << endl; // 40
+    // cout << bst.lowestCommonAncestor(10, 35) << endl; // 30
+    // cout << bst.lowestCommonAncestor(45, 60) << endl; // 50
+    // cout << bst.lowestCommonAncestor(60, 50) << endl; // 50
+    // cout << bst.lowestCommonAncestor(60, 10) << endl; // 40
 
     // BinarySearchTree bst(20);
 
