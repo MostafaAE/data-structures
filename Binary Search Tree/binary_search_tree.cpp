@@ -264,6 +264,32 @@ private:
         return cur->data;
     }
 
+    bool find_chain(vector<Node *> &ancestors, Node *node, int val)
+    {
+        if (!node)
+            return false;
+
+        ancestors.push_back(node);
+
+        if (node->data == val)
+            return true;
+
+        if (val < node->data)
+            return find_chain(ancestors, node->left, val);
+
+        return find_chain(ancestors, node->right, val);
+    }
+
+    Node *get_next(vector<Node *> &ancestors)
+    {
+        if (ancestors.empty())
+            return nullptr;
+
+        Node *next = ancestors.back();
+        ancestors.pop_back();
+        return next;
+    }
+
 public:
     BinarySearchTree() {}
 
@@ -451,6 +477,36 @@ public:
     {
         return max_value(root);
     }
+
+    pair<bool, int> successor(int target)
+    {
+        vector<Node *> ancestors;
+
+        // does not exist
+        if (!find_chain(ancestors, root, target))
+            return make_pair(false, -1);
+
+        Node *child = get_next(ancestors);
+
+        // if the target have right then the successor is the minimum in its sub tree
+        // successor is found
+        if (child->right)
+            return make_pair(true, min_value(child->right));
+
+        Node *parent = get_next(ancestors);
+
+        while (parent && parent->right == child)
+        {
+            child = parent;
+            parent = get_next(ancestors);
+        }
+
+        // successor is found
+        if (parent)
+            return make_pair(true, parent->data);
+
+        return make_pair(false, -1);
+    }
 };
 
 int main()
@@ -466,7 +522,34 @@ int main()
     bst.insert(60);
 
     cout << bst.min_value() << endl; // 10
-    cout << bst.max_value() << endl; // 10
+    cout << bst.max_value() << endl; // 60
+
+    pair<bool, int> sc = bst.successor(40);
+    cout << sc.first << " " << sc.second << endl; // 1 45
+
+    sc = bst.successor(30);
+    cout << sc.first << " " << sc.second << endl; // 1 35
+
+    sc = bst.successor(50);
+    cout << sc.first << " " << sc.second << endl; // 1 60
+
+    sc = bst.successor(10);
+    cout << sc.first << " " << sc.second << endl; // 1 30
+
+    sc = bst.successor(35);
+    cout << sc.first << " " << sc.second << endl; // 1 40
+
+    sc = bst.successor(45);
+    cout << sc.first << " " << sc.second << endl; // 1 50
+
+    sc = bst.successor(60);
+    cout << sc.first << " " << sc.second << endl; // 0 -1
+
+    sc = bst.successor(100);
+    cout << sc.first << " " << sc.second << endl; // 0 -1
+
+    sc = bst.successor(5);
+    cout << sc.first << " " << sc.second << endl; // 0 -1
 
     // BinarySearchTree bst(40);
 
