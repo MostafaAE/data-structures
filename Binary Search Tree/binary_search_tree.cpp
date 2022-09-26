@@ -254,6 +254,16 @@ private:
         return cur->data;
     }
 
+    // O(h)
+    int max_value(Node *node)
+    {
+        Node *cur = node;
+        while (cur && cur->right)
+            cur = cur->right;
+
+        return cur->data;
+    }
+
 public:
     BinarySearchTree() {}
 
@@ -435,6 +445,12 @@ public:
     {
         return min_value(root);
     }
+
+    // O(h)
+    int max_value()
+    {
+        return max_value(root);
+    }
 };
 
 int main()
@@ -450,6 +466,7 @@ int main()
     bst.insert(60);
 
     cout << bst.min_value() << endl; // 10
+    cout << bst.max_value() << endl; // 10
 
     // BinarySearchTree bst(40);
 
