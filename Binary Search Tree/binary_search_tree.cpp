@@ -368,6 +368,58 @@ private:
         return node;
     }
 
+    Node *delete_node_iterative(Node *node, int target)
+    {
+        if (!node)
+            return nullptr;
+
+        if (target < node->data)
+            node->left = delete_node(node->left, target);
+        else if (target > node->data)
+            node->right = delete_node(node->right, target);
+        else
+        {
+            // target == node->data
+            // found the node: handle deletion
+
+            Node *temp = node;
+
+            if (!node->left && !node->right) // case 1: leaf node
+                node = nullptr;
+            else if (!node->right) // case 2: 1 left child
+                node = node->left;
+            else if (!node->left) // case 2: 1 right child
+                node = node->right;
+            else // case 3: 2 children (left & right)
+            {
+                // find successor
+                Node *parent = node;
+                Node *successor = node->right;
+                while (successor->left)
+                    parent = successor, successor = successor->left;
+
+                node->data = successor->data;
+
+                // child->left must be null, but child->right might not be
+                // we need to link parent to child->right
+                // But link with parent->left? or parent->right?
+                // Simply same as current parent-child relations
+                // In details: 2 cases: either successor was directly node's right
+                // Or it was deeper on chain of left nodes
+                if (parent->right == successor)
+                    parent->right = successor->right;
+                else
+                    parent->left = successor->right;
+
+                temp = successor;
+            }
+
+            if (temp)
+                delete temp;
+        }
+        return node;
+    }
+
 public:
     BinarySearchTree() {}
 
