@@ -290,24 +290,35 @@ private:
         return next;
     }
 
-    void successor_queries(Node *node, deque<int> &target, bool &found)
+    // incomplete inorder traversal that catches the successors during traversal
+    void successor_queries(Node *node, deque<int> &queries, vector<int> &answer, vector<int> &traversal)
     {
-        if (!node)
+        if (queries.empty())
             return;
 
-        successor_queries(node->left, target, found);
-
-        if (found && node->data > target.front())
+        if (node->left && queries.front() < node->data)
         {
-            cout << node->data << endl;
-            found = false;
-            target.pop_front();
+            successor_queries(node->left, queries, answer, traversal);
+
+            if (queries.empty())
+                return;
         }
 
-        if (node->data == target.front())
-            found = true;
+        // if the last element added in the traversal is the requested element
+        // then the current element is its succesor, add it to the answer
+        if (!traversal.empty() && traversal.back() == queries.front())
+        {
+            answer.push_back(node->data);
+            queries.pop_front();
 
-        successor_queries(node->right, target, found);
+            if (queries.empty())
+                return;
+        }
+
+        traversal.push_back(node->data);
+
+        if (node->right && queries.front() >= node->data)
+            successor_queries(node->right, queries, answer, traversal);
     }
 
 public:
@@ -558,10 +569,10 @@ public:
         return make_pair(false, -1);
     }
 
-    void successor_queries(deque<int> &target)
+    void successor_queries(deque<int> &queries, vector<int> &answer)
     {
-        bool found = false;
-        successor_queries(root, target, found);
+        vector<int> traversal;
+        successor_queries(root, queries, answer, traversal);
     }
 };
 
@@ -576,8 +587,11 @@ int main()
     bst.insert(60);
 
     deque<int> dq({10, 30, 50});
+    vector<int> answer;
+    bst.successor_queries(dq, answer);
 
-    bst.successor_queries(dq); // 30 35 60
+    for (int ans : answer)
+        cout << ans << " "; // 30 35 60
 
     // BinarySearchTree bst(40);
 
