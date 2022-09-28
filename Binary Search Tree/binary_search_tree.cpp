@@ -576,22 +576,52 @@ public:
     }
 };
 
+bool is_degenerate_bst(vector<int> preorder)
+{
+    if (preorder.size() <= 2)
+        return true;
+
+    int mn = INT_MIN, mx = INT_MAX;
+
+    for (int i = 1; i < (int)preorder.size(); i++)
+    {
+        if (preorder[i] < mn || preorder[i] > mx)
+            return false;
+
+        if (preorder[i] > preorder[i - 1])
+            mn = preorder[i - 1] + 1;
+
+        else
+            mx = preorder[i - 1] - 1;
+    }
+
+    return true;
+}
+
 int main()
 {
-    BinarySearchTree bst(40);
-    bst.insert(30);
-    bst.insert(50);
-    bst.insert(10);
-    bst.insert(35);
-    bst.insert(45);
-    bst.insert(60);
+    cout << boolalpha;
+    cout << is_degenerate_bst({25, 8, 11, 13, 12}) << endl;                      // true
+    cout << is_degenerate_bst({100, 70, 101}) << endl;                           // false
+    cout << is_degenerate_bst({100, 70, 60, 75}) << endl;                        // false
+    cout << is_degenerate_bst({100, 70, 60, 65}) << endl;                        // true
+    cout << is_degenerate_bst({9, 8, 7, 6, 5, 4, 3}) << endl;                    // true
+    cout << is_degenerate_bst({500, 400, 300, 200, 250, 275, 260}) << endl;      // true
+    cout << is_degenerate_bst({500, 400, 300, 200, 250, 275, 260, 280}) << endl; // false
+    // BinarySearchTree bst(40);
+    // bst.insert(30);
+    // bst.insert(50);
+    // bst.insert(10);
+    // bst.insert(35);
+    // bst.insert(45);
+    // bst.insert(60);
 
-    deque<int> dq({10, 30, 50});
-    vector<int> answer;
-    bst.successor_queries(dq, answer);
+    // deque<int> dq({10, 30, 50});
+    // vector<int> answer;
+    // bst.successor_queries(dq, answer);
 
-    for (int ans : answer)
-        cout << ans << " "; // 30 35 60
+    // for (int ans : answer)
+    //     cout << ans << " "; // 30 35 60
 
     // BinarySearchTree bst(40);
 
