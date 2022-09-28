@@ -321,6 +321,53 @@ private:
             successor_queries(node->right, queries, answer, traversal);
     }
 
+    // O(h)
+    Node *min_node(Node *node)
+    {
+        Node *cur = node;
+        while (cur && cur->left)
+            cur = cur->left;
+
+        return cur;
+    }
+
+    Node *delete_node(Node *node, int target)
+    {
+        if (!node)
+            return nullptr;
+
+        if (target < node->data)
+            node->left = delete_node(node->left, target);
+        else if (target > node->data)
+            node->right = delete_node(node->right, target);
+        else
+        {
+            // target == node->data
+            // found the node: handle deletion
+
+            Node *temp = node;
+
+            if (!node->left && !node->right) // case 1: leaf node
+                node = nullptr;
+            else if (!node->right) // case 2: 1 left child
+                node = node->left;
+            else if (!node->left) // case 2: 1 right child
+                node = node->right;
+            else // case 3: 2 children (left & right)
+            {
+                // find successor
+                Node *successor = min_node(node->right);
+                node->data = successor->data;
+                node->right = delete_node(node->right, successor->data);
+                temp = nullptr;
+            }
+
+            if (temp)
+                delete temp;
+        }
+        return node;
+    }
+
 public:
     BinarySearchTree() {}
 
@@ -574,6 +621,11 @@ public:
         vector<int> traversal;
         successor_queries(root, queries, answer, traversal);
     }
+
+    void delete_value(int target)
+    {
+        root = delete_node(root, target);
+    }
 };
 
 bool is_degenerate_bst(vector<int> preorder)
@@ -600,14 +652,39 @@ bool is_degenerate_bst(vector<int> preorder)
 
 int main()
 {
-    cout << boolalpha;
-    cout << is_degenerate_bst({25, 8, 11, 13, 12}) << endl;                      // true
-    cout << is_degenerate_bst({100, 70, 101}) << endl;                           // false
-    cout << is_degenerate_bst({100, 70, 60, 75}) << endl;                        // false
-    cout << is_degenerate_bst({100, 70, 60, 65}) << endl;                        // true
-    cout << is_degenerate_bst({9, 8, 7, 6, 5, 4, 3}) << endl;                    // true
-    cout << is_degenerate_bst({500, 400, 300, 200, 250, 275, 260}) << endl;      // true
-    cout << is_degenerate_bst({500, 400, 300, 200, 250, 275, 260, 280}) << endl; // false
+    BinarySearchTree bst(40);
+    bst.insert(30);
+    bst.insert(50);
+    bst.insert(10);
+    bst.insert(35);
+    bst.insert(45);
+    bst.insert(60);
+    bst.print_inorder(); // 10 30 35 40 45 50 60
+    bst.delete_value(10);
+    bst.print_inorder(); // 30 35 40 45 50 60
+    bst.delete_value(30);
+    bst.print_inorder(); // 35 40 45 50 60
+    bst.delete_value(50);
+    bst.print_inorder(); // 35 40 45 60
+    bst.delete_value(40);
+    bst.print_inorder(); // 35 45 60
+    bst.delete_value(45);
+    bst.print_inorder(); // 35 60
+    bst.delete_value(60);
+    bst.print_inorder(); // 35
+    bst.delete_value(35);
+    bst.print_inorder(); //
+    bst.delete_value(0);
+    bst.print_inorder(); //
+
+    // cout << boolalpha;
+    // cout << is_degenerate_bst({25, 8, 11, 13, 12}) << endl;                      // true
+    // cout << is_degenerate_bst({100, 70, 101}) << endl;                           // false
+    // cout << is_degenerate_bst({100, 70, 60, 75}) << endl;                        // false
+    // cout << is_degenerate_bst({100, 70, 60, 65}) << endl;                        // true
+    // cout << is_degenerate_bst({9, 8, 7, 6, 5, 4, 3}) << endl;                    // true
+    // cout << is_degenerate_bst({500, 400, 300, 200, 250, 275, 260}) << endl;      // true
+    // cout << is_degenerate_bst({500, 400, 300, 200, 250, 275, 260, 280}) << endl; // false
     // BinarySearchTree bst(40);
     // bst.insert(30);
     // bst.insert(50);
