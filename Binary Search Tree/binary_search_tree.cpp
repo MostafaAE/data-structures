@@ -290,6 +290,26 @@ private:
         return next;
     }
 
+    void successor_queries(Node *node, deque<int> &target, bool &found)
+    {
+        if (!node)
+            return;
+
+        successor_queries(node->left, target, found);
+
+        if (found && node->data > target.front())
+        {
+            cout << node->data << endl;
+            found = false;
+            target.pop_front();
+        }
+
+        if (node->data == target.front())
+            found = true;
+
+        successor_queries(node->right, target, found);
+    }
+
 public:
     BinarySearchTree() {}
 
@@ -519,7 +539,7 @@ public:
         Node *child = get_next(ancestors);
 
         // if the target have left then the predecessor is the maximum in its sub tree
-        // successor is found
+        // predecessor is found
         if (child->left)
             return make_pair(true, max_value(child->left));
 
@@ -531,19 +551,23 @@ public:
             parent = get_next(ancestors);
         }
 
-        // successor is found
+        // predecessor is found
         if (parent)
             return make_pair(true, parent->data);
 
         return make_pair(false, -1);
     }
+
+    void successor_queries(deque<int> &target)
+    {
+        bool found = false;
+        successor_queries(root, target, found);
+    }
 };
 
 int main()
 {
-
     BinarySearchTree bst(40);
-
     bst.insert(30);
     bst.insert(50);
     bst.insert(10);
@@ -551,55 +575,68 @@ int main()
     bst.insert(45);
     bst.insert(60);
 
-    bst.print_inorder();             // 10 30 35 40 45 50 60
-    cout << bst.min_value() << endl; // 10
-    cout << bst.max_value() << endl; // 60
+    deque<int> dq({10, 30, 50});
 
-    pair<bool, int> sc = bst.successor(40);
-    pair<bool, int> pr = bst.predecessor(40);
+    bst.successor_queries(dq); // 30 35 60
 
-    cout << sc.first << " " << sc.second << endl; // 1 45
-    cout << pr.first << " " << pr.second << endl; // 1 35
+    // BinarySearchTree bst(40);
 
-    sc = bst.successor(30);
-    cout << sc.first << " " << sc.second << endl; // 1 35
-    pr = bst.predecessor(30);
-    cout << pr.first << " " << pr.second << endl; // 1 10
+    // bst.insert(30);
+    // bst.insert(50);
+    // bst.insert(10);
+    // bst.insert(35);
+    // bst.insert(45);
+    // bst.insert(60);
 
-    sc = bst.successor(50);
-    cout << sc.first << " " << sc.second << endl; // 1 60
-    pr = bst.predecessor(50);
-    cout << pr.first << " " << pr.second << endl; // 1 45
+    // bst.print_inorder();             // 10 30 35 40 45 50 60
+    // cout << bst.min_value() << endl; // 10
+    // cout << bst.max_value() << endl; // 60
 
-    sc = bst.successor(10);
-    cout << sc.first << " " << sc.second << endl; // 1 30
-    pr = bst.predecessor(10);
-    cout << pr.first << " " << pr.second << endl; // 0 -1
+    // pair<bool, int> sc = bst.successor(40);
+    // pair<bool, int> pr = bst.predecessor(40);
 
-    sc = bst.successor(35);
-    cout << sc.first << " " << sc.second << endl; // 1 40
-    pr = bst.predecessor(35);
-    cout << pr.first << " " << pr.second << endl; // 1 30
+    // cout << sc.first << " " << sc.second << endl; // 1 45
+    // cout << pr.first << " " << pr.second << endl; // 1 35
 
-    sc = bst.successor(45);
-    cout << sc.first << " " << sc.second << endl; // 1 50
-    pr = bst.predecessor(45);
-    cout << pr.first << " " << pr.second << endl; // 1 40
+    // sc = bst.successor(30);
+    // cout << sc.first << " " << sc.second << endl; // 1 35
+    // pr = bst.predecessor(30);
+    // cout << pr.first << " " << pr.second << endl; // 1 10
 
-    sc = bst.successor(60);
-    cout << sc.first << " " << sc.second << endl; // 0 -1
-    pr = bst.predecessor(60);
-    cout << pr.first << " " << pr.second << endl; // 1 50
+    // sc = bst.successor(50);
+    // cout << sc.first << " " << sc.second << endl; // 1 60
+    // pr = bst.predecessor(50);
+    // cout << pr.first << " " << pr.second << endl; // 1 45
 
-    sc = bst.successor(100);
-    cout << sc.first << " " << sc.second << endl; // 0 -1
-    pr = bst.predecessor(100);
-    cout << pr.first << " " << pr.second << endl; // 0 -1
+    // sc = bst.successor(10);
+    // cout << sc.first << " " << sc.second << endl; // 1 30
+    // pr = bst.predecessor(10);
+    // cout << pr.first << " " << pr.second << endl; // 0 -1
 
-    sc = bst.successor(5);
-    cout << sc.first << " " << sc.second << endl; // 0 -1
-    pr = bst.predecessor(5);
-    cout << pr.first << " " << pr.second << endl; // 0 -1
+    // sc = bst.successor(35);
+    // cout << sc.first << " " << sc.second << endl; // 1 40
+    // pr = bst.predecessor(35);
+    // cout << pr.first << " " << pr.second << endl; // 1 30
+
+    // sc = bst.successor(45);
+    // cout << sc.first << " " << sc.second << endl; // 1 50
+    // pr = bst.predecessor(45);
+    // cout << pr.first << " " << pr.second << endl; // 1 40
+
+    // sc = bst.successor(60);
+    // cout << sc.first << " " << sc.second << endl; // 0 -1
+    // pr = bst.predecessor(60);
+    // cout << pr.first << " " << pr.second << endl; // 1 50
+
+    // sc = bst.successor(100);
+    // cout << sc.first << " " << sc.second << endl; // 0 -1
+    // pr = bst.predecessor(100);
+    // cout << pr.first << " " << pr.second << endl; // 0 -1
+
+    // sc = bst.successor(5);
+    // cout << sc.first << " " << sc.second << endl; // 0 -1
+    // pr = bst.predecessor(5);
+    // cout << pr.first << " " << pr.second << endl; // 0 -1
 
     // BinarySearchTree bst(40);
 
