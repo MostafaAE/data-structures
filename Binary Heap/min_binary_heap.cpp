@@ -120,6 +120,19 @@ public:
     {
         return size == 0;
     }
+
+    void print_less_than(int val, int parent_pos = 0)
+    {
+        assert(!isempty());
+
+        if (parent_pos == -1 || array[parent_pos] >= val)
+            return;
+
+        cout << array[parent_pos] << " ";
+
+        print_less_than(val, left(parent_pos));
+        print_less_than(val, right(parent_pos));
+    }
 };
 
 // O(nlogn)
@@ -140,11 +153,16 @@ int main()
     vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
     MinHeap heap(v);
 
-    while (!heap.isempty()) // 2 5 6 7 8 10 12 14 17 19 22 25 30 37
-    {
-        cout << heap.top() << " ";
-        heap.pop();
-    }
+    heap.print_less_than(10);
+
+    // vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
+    // MinHeap heap(v);
+
+    // while (!heap.isempty()) // 2 5 6 7 8 10 12 14 17 19 22 25 30 37
+    // {
+    //     cout << heap.top() << " ";
+    //     heap.pop();
+    // }
 
     // vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
     // heap_sort(v);
