@@ -64,11 +64,30 @@ private:
         }
     }
 
+    // O(n)
+    void heapify()
+    {
+        for (int i = size / 2 - 1; i >= 0; i--)
+            heapify_down(i);
+    }
+
 public:
     MinHeap()
     {
-        array = new int[capacity];
+        array = new int[capacity]{};
         size = 0;
+    }
+
+    MinHeap(vector<int> &elements)
+    {
+        assert((int)elements.size() <= capacity);
+        array = new int[capacity]{};
+        size = elements.size();
+
+        for (int i = 0; i < (int)elements.size(); i++)
+            array[i] = elements[i];
+
+        heapify();
     }
 
     ~MinHeap()
@@ -119,9 +138,18 @@ void heap_sort(vector<int> &elements)
 int main()
 {
     vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
-    heap_sort(v);
-    for (int i = 0; i < v.size(); ++i) // 2 5 6 7 8 10 12 14 17 19 22 25 30 37
-        cout << v[i] << " ";
+    MinHeap heap(v);
+
+    while (!heap.isempty()) // 2 5 6 7 8 10 12 14 17 19 22 25 30 37
+    {
+        cout << heap.top() << " ";
+        heap.pop();
+    }
+
+    // vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
+    // heap_sort(v);
+    // for (int i = 0; i < v.size(); ++i) // 2 5 6 7 8 10 12 14 17 19 22 25 30 37
+    //     cout << v[i] << " ";
 
     // MinHeap heap;
     // vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
