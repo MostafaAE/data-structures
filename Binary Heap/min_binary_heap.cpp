@@ -71,6 +71,22 @@ private:
             heapify_down(i);
     }
 
+    bool is_heap(int parent_pos = 0)
+    {
+        if (parent_pos == -1)
+            return true;
+
+        int left_child = left(parent_pos);
+        int right_child = right(parent_pos);
+
+        if (left_child != -1 && array[parent_pos] > array[left_child])
+            return false;
+        if (right_child != -1 && array[parent_pos] > array[right_child])
+            return false;
+
+        return is_heap(left_child) && is_heap(right_child);
+    }
+
 public:
     MinHeap()
     {
@@ -133,6 +149,21 @@ public:
         print_less_than(val, left(parent_pos));
         print_less_than(val, right(parent_pos));
     }
+
+    bool is_heap(int *p, int n)
+    {
+        int old_size = size;
+        int *old_array = array;
+
+        array = p;
+        size = n;
+
+        bool res = is_heap(0);
+
+        size = old_size;
+        array = old_array;
+        return res;
+    }
 };
 
 // O(nlogn)
@@ -150,10 +181,14 @@ void heap_sort(vector<int> &elements)
 }
 int main()
 {
+    int arr[] = {2, 5, 12, 7, 6, 22, 14, 19, 10, 17, 8, 37, 25, 30};
+
     vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
     MinHeap heap(v);
 
-    heap.print_less_than(10);
+    cout << heap.is_heap(arr, 13) << endl; // 1
+
+    // heap.print_less_than(10);
 
     // vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
     // MinHeap heap(v);
