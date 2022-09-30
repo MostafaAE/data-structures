@@ -41,6 +41,29 @@ private:
         heapify_up(parent_pos);
     }
 
+    void heapify_down(int node = 0)
+    {
+        int child_pos = left(node);
+        int right_child = right(node);
+
+        // the node is a leaf node (no children)
+        if (child_pos == -1)
+            return;
+
+        // if the node have left and right children
+        // get the minimum of them
+        if (right_child != -1 && array[right_child] < array[child_pos])
+            child_pos = right_child;
+
+        // if the node is greater than the minimum of its children
+        // swap it with the minimum and repeat
+        if (array[node] > array[child_pos])
+        {
+            swap(array[node], array[child_pos]);
+            heapify_down(child_pos);
+        }
+    }
+
 public:
     MinHeap()
     {
@@ -59,6 +82,13 @@ public:
         assert(size + 1 <= capacity);
         array[size++] = key;
         heapify_up(size - 1);
+    }
+
+    void pop()
+    {
+        assert(!isempty());
+        array[0] = array[--size];
+        heapify_down(0);
     }
 
     int top()
