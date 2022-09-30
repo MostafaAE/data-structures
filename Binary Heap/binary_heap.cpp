@@ -103,13 +103,39 @@ public:
     }
 };
 
-int main()
+// O(nlogn)
+void heap_sort(vector<int> &elements)
 {
     MinHeap heap;
-    vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
+    for (int i = 0; i < elements.size(); ++i)
+        heap.push(elements[i]);
 
-    for (int i = 0; i < v.size(); ++i)
-        heap.push(v[i]);
+    for (int i = 0; i < elements.size(); ++i)
+    {
+        elements[i] = heap.top();
+        heap.pop();
+    }
+}
+int main()
+{
+    vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
+    heap_sort(v);
+    for (int i = 0; i < v.size(); ++i) // 2 5 6 7 8 10 12 14 17 19 22 25 30 37
+        cout << v[i] << " ";
+
+    // MinHeap heap;
+    // vector<int> v{2, 17, 22, 10, 8, 37, 14, 19, 7, 6, 5, 12, 25, 30};
+
+    // for (int i = 0; i < v.size(); ++i)
+    //     heap.push(v[i]);
+
+    // while (!heap.isempty()) // 2 5 6 7 8 10 12 14 17 19 22 25 30 37
+    // {
+    //     cout << heap.top() << " ";
+    //     heap.pop();
+    // }
+
+    cout << "\n\nNO RTE\n";
 
     return 0;
 }
