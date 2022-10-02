@@ -70,6 +70,17 @@ private:
         return Q;
     }
 
+    Node *right_rotation(Node *Q)
+    {
+        cout << "right_rotation " << Q->data << "\n";
+        Node *P = Q->left;
+        Q->left = P->right;
+        P->right = Q;
+        Q->update_height();
+        P->update_height();
+        return P;
+    }
+
 public:
     BinarySearchTree() {}
 
