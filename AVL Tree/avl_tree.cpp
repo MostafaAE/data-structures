@@ -59,6 +59,17 @@ private:
         return search(target, node->right);
     }
 
+    Node *left_rotation(Node *P)
+    {
+        cout << "left_rotation " << P->data << "\n";
+        Node *Q = P->right;
+        P->right = Q->left;
+        Q->left = P;
+        P->update_height();
+        Q->update_height();
+        return Q;
+    }
+
 public:
     BinarySearchTree() {}
 
