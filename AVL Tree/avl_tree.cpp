@@ -81,6 +81,27 @@ private:
         return P;
     }
 
+    Node *balance(Node *node)
+    {
+        // left heavy
+        if (node->balance_factor() == 2)
+        {
+            if (node->left->balance_factor() == -1)
+                node->left = left_rotation(node->left);
+
+            node = right_rotation(node);
+        }
+        // right heavy
+        else if (node->balance_factor() == -2)
+        {
+            if (node->right->balance_factor() == 1)
+                node->right = right_rotation(node->right);
+
+            node = left_rotation(node);
+        }
+        return node;
+    }
+
 public:
     BinarySearchTree() {}
 
@@ -94,16 +115,20 @@ public:
         clear();
     }
 
+    void clear()
+    {
+        clear(root);
+        root = nullptr;
+    }
+
     bool search(int target)
     {
         assert(root);
-        return search(root, target);
+        return search(target, root);
     }
+};
 
-}
-
-int
-main()
+int main()
 {
 
     // must see it, otherwise RTE
