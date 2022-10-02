@@ -123,6 +123,58 @@ private:
         return balance(node);
     }
 
+    // O(h)
+    Node *min_node(Node *node)
+    {
+        Node *cur = node;
+        while (cur && cur->left)
+            cur = cur->left;
+
+        return cur;
+    }
+
+    Node *delete_node(int target, Node *node)
+    {
+        if (!node)
+            return nullptr;
+
+        if (target < node->data)
+            node->left = delete_node(target, node->left);
+        else if (target > node->data)
+            node->right = delete_node(target, node->right);
+        else
+        {
+            // target == node->data
+            // found the node: handle deletion
+
+            Node *temp = node;
+
+            if (!node->left && !node->right) // case 1: leaf node
+                node = nullptr;
+            else if (!node->right) // case 2: 1 left child
+                node = node->left;
+            else if (!node->left) // case 2: 1 right child
+                node = node->right;
+            else // case 3: 2 children (left & right)
+            {
+                // find successor
+                Node *successor = min_node(node->right);
+                node->data = successor->data;
+                node->right = delete_node(successor->data, node->right);
+                temp = nullptr;
+            }
+
+            if (temp)
+                delete temp;
+        }
+        if (node)
+        {
+            node->update_height();
+            node = balance(node);
+        }
+        return node;
+    }
+
     void print_inorder(Node *node)
     {
         if (!node)
@@ -202,6 +254,12 @@ public:
         root = insert(target, root);
     }
 
+    void delete_value(int target)
+    {
+        if (root)
+            root = delete_node(target, root);
+    }
+
     void print_inorder()
     {
         print_inorder(root);
@@ -248,6 +306,15 @@ void f1()
         tree.insert(i);
         tree.level_order_traversal();
     }
+
+    tree.delete_value(32);
+    tree.level_order_traversal();
+    tree.delete_value(31);
+    tree.level_order_traversal();
+    tree.delete_value(30);
+    tree.level_order_traversal();
+    tree.delete_value(10);
+    tree.level_order_traversal();
 }
 int main()
 {
@@ -431,6 +498,41 @@ int main()
  Level 3: 1 5 9 13 17 21 25 29
  Level 4: 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 31
  Level 5: 30 32
-
+******************
+Level 0: 15
+Level 1: 7 23
+Level 2: 3 11 19 27
+Level 3: 1 5 9 13 17 21 25 29
+Level 4: 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 31
+Level 5: 30 32
+Node: 32 is deleted
+******************
+Level 0: 15
+Level 1: 7 23
+Level 2: 3 11 19 27
+Level 3: 1 5 9 13 17 21 25 29
+Level 4: 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 31
+Level 5: 30
+Node: 31 is deleted
+******************
+Level 0: 15
+Level 1: 7 23
+Level 2: 3 11 19 27
+Level 3: 1 5 9 13 17 21 25 29
+Level 4: 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30
+Node: 30 is deleted
+******************
+Level 0: 15
+Level 1: 7 23
+Level 2: 3 11 19 27
+Level 3: 1 5 9 13 17 21 25 29
+Level 4: 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28
+Node: 10 is deleted
+******************
+Level 0: 15
+Level 1: 7 23
+Level 2: 3 11 19 27
+Level 3: 1 5 9 13 17 21 25 29
+Level 4: 0 2 4 6 8 12 14 16 18 20 22 24 26 28
 
  */
