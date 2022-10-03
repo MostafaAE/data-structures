@@ -77,6 +77,24 @@ private:
         return lower_bound(target, node->right);
     }
 
+    pair<bool, int> upper_bound(int target, Node *node)
+    {
+        if (!node)
+            return make_pair(false, -1);
+
+        if (target < node->data)
+        {
+            pair<bool, int> ans = upper_bound(target, node->left);
+
+            if (ans.first)
+                return ans;
+
+            return make_pair(true, node->data);
+        }
+
+        return upper_bound(target, node->right);
+    }
+
     Node *left_rotation(Node *P)
     {
         cout << "left_rotation " << P->data << "\n";
@@ -269,6 +287,11 @@ public:
         return lower_bound(target, root);
     }
 
+    pair<bool, int> upper_bound(int target)
+    {
+        return upper_bound(target, root);
+    }
+
     void insert(int target)
     {
         if (!root)
@@ -370,10 +393,40 @@ void lower_bound_test()
     cout << lb.second << endl;
 }
 
+void upper_bound_test()
+{
+    AVLTree tree;
+
+    for (int i = 1; i <= 10; ++i)
+        tree.insert(i * 10);
+
+    tree.level_order_traversal();
+
+    pair<bool, int> ub = tree.upper_bound(10);
+    cout << ub.second << endl;
+
+    ub = tree.upper_bound(1);
+    cout << ub.second << endl;
+
+    ub = tree.upper_bound(11);
+    cout << ub.second << endl;
+    ub = tree.upper_bound(20);
+    cout << ub.second << endl;
+
+    ub = tree.upper_bound(21);
+    cout << ub.second << endl;
+
+    ub = tree.upper_bound(100);
+    cout << ub.second << endl;
+
+    ub = tree.upper_bound(101);
+    cout << ub.second << endl;
+}
 int main()
 {
     // f1();
-    lower_bound_test();
+    // lower_bound_test();
+    upper_bound_test();
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
     return 0;
