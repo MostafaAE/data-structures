@@ -31,6 +31,22 @@ public:
             child[cur]->insert(str, idx + 1);
         }
     }
+
+    bool word_exist(string str, int idx = 0)
+    {
+        if (idx == (int)str.size())
+            return isLeaf; // there is a word marked here
+
+        else
+        {
+
+            int cur = str[idx] - 'a';
+            if (!child[cur])
+                return false; // such path does not exist(word does not exist)
+
+            return child[cur]->word_exist(str, idx + 1);
+        }
+    }
 };
 
 int main()
@@ -38,6 +54,13 @@ int main()
     Trie tr;
     tr.insert("abcdef");
     tr.insert("bcdef");
+
+    cout << tr.word_exist("abcdef") << endl; // 1
+    cout << tr.word_exist("abc") << endl;    // 0
+    cout << tr.word_exist("def") << endl;    // 0
+    cout << tr.word_exist("bcdef") << endl;  // 1
+    cout << tr.word_exist("cdef") << endl;   // 0
+
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
     return 0;
