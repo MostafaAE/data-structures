@@ -32,6 +32,21 @@ public:
         }
     }
 
+    void insert_iterative(string str)
+    {
+        Trie *cur = this;
+        for (int i = 0; i < (int)str.size(); i++)
+        {
+            int ch = str[i] - 'a';
+
+            if (!cur->child[ch])
+                cur->child[ch] = new Trie();
+
+            cur = cur->child[ch];
+        }
+        cur->isLeaf = true;
+    }
+
     bool word_exist(string str, int idx = 0)
     {
         if (idx == (int)str.size())
@@ -68,7 +83,7 @@ int main()
 
     Trie tr;
     tr.insert("abcdef");
-    tr.insert("bcdef");
+    tr.insert_iterative("bcdef");
 
     cout << tr.word_exist("abcdef") << endl; // 1
     cout << tr.word_exist("abc") << endl;    // 0
