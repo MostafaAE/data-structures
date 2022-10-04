@@ -62,6 +62,21 @@ public:
         }
     }
 
+    bool word_exist_iterative(string str)
+    {
+        Trie *cur = this;
+        for (int i = 0; i < (int)str.size(); i++)
+        {
+            int ch = str[i] - 'a';
+
+            if (!cur->child[ch])
+                return false;
+
+            cur = cur->child[ch];
+        }
+        return cur->isLeaf;
+    }
+
     bool prefix_exist(string str, int idx = 0)
     {
         if (idx == (int)str.size())
@@ -78,12 +93,11 @@ public:
     }
 };
 
-int main()
+void test1()
 {
-
     Trie tr;
     tr.insert("abcdef");
-    tr.insert_iterative("bcdef");
+    tr.insert("bcdef");
 
     cout << tr.word_exist("abcdef") << endl; // 1
     cout << tr.word_exist("abc") << endl;    // 0
@@ -97,6 +111,27 @@ int main()
 
     tr.insert("defmosta");
     cout << tr.prefix_exist("def") << endl; // 1
+}
+
+void test2()
+{
+    Trie tr;
+    tr.insert_iterative("abcdef");
+    tr.insert_iterative("bcdef");
+
+    cout << tr.word_exist_iterative("abcdef") << endl; // 1
+    cout << tr.word_exist_iterative("abc") << endl;    // 0
+    cout << tr.word_exist_iterative("def") << endl;    // 0
+    cout << tr.word_exist_iterative("bcdef") << endl;  // 1
+    cout << tr.word_exist_iterative("cdef") << endl;   // 0
+}
+
+int main()
+{
+
+    // test1();
+    test2();
+
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
     return 0;
