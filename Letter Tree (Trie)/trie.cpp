@@ -12,7 +12,7 @@ public:
     Trie()
     {
         // set the child array pointers to nullptr
-        memset(child, 0, size(child));
+        memset(child, 0, sizeof(child));
     }
 
     void insert(string str, int idx = 0)
@@ -91,6 +91,26 @@ public:
             return child[cur]->prefix_exist(str, idx + 1);
         }
     }
+
+    string first_word_prefix(const string &str)
+    {
+        Trie *cur = this;
+
+        for (int i = 0; i < (int)str.size(); i++)
+        {
+
+            int ch = str[i] - 'a';
+
+            if (!cur->child[ch])
+                break;
+
+            cur = cur->child[ch];
+
+            if (cur->isLeaf)
+                return str.substr(0, i + 1);
+        }
+        return str;
+    }
 };
 
 void test1()
@@ -126,11 +146,27 @@ void test2()
     cout << tr.word_exist_iterative("cdef") << endl;   // 0
 }
 
+void test3()
+{
+    Trie tr;
+    tr.insert_iterative("xyz");
+    tr.insert_iterative("xyzea");
+    tr.insert_iterative("a");
+    tr.insert_iterative("bc");
+
+    cout << tr.first_word_prefix("x") << endl;      // x
+    cout << tr.first_word_prefix("xyzabc") << endl; // xyz
+    cout << tr.first_word_prefix("bcabce") << endl; // bc
+    cout << tr.first_word_prefix("xyzq") << endl;   // xyz
+    cout << tr.first_word_prefix("azz") << endl;    // a
+}
+
 int main()
 {
 
     // test1();
-    test2();
+    // test2();
+    test3();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
