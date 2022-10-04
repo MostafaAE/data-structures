@@ -39,7 +39,6 @@ public:
 
         else
         {
-
             int cur = str[idx] - 'a';
             if (!child[cur])
                 return false; // such path does not exist(word does not exist)
@@ -47,10 +46,26 @@ public:
             return child[cur]->word_exist(str, idx + 1);
         }
     }
+
+    bool prefix_exist(string str, int idx = 0)
+    {
+        if (idx == (int)str.size())
+            return true; // all subword covered
+
+        else
+        {
+            int cur = str[idx] - 'a';
+            if (!child[cur])
+                return false; // such path does not exist(word does not exist)
+
+            return child[cur]->prefix_exist(str, idx + 1);
+        }
+    }
 };
 
 int main()
 {
+
     Trie tr;
     tr.insert("abcdef");
     tr.insert("bcdef");
@@ -61,6 +76,12 @@ int main()
     cout << tr.word_exist("bcdef") << endl;  // 1
     cout << tr.word_exist("cdef") << endl;   // 0
 
+    cout << tr.prefix_exist("abc") << endl; // 1
+    cout << tr.prefix_exist("def") << endl; // 0
+    cout << tr.prefix_exist("bcd") << endl; // 1
+
+    tr.insert("defmosta");
+    cout << tr.prefix_exist("def") << endl; // 1
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
     return 0;
