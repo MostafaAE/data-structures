@@ -139,6 +139,26 @@ public:
         }
         cur->get_all_strings(res, str);
     }
+
+    bool word_exist_with_1_change(string str)
+    {
+        // O(L * 26 * L)
+        for (int i = 0; i < (int)str.size(); i++)
+        {
+            char cpy = str[i];
+            for (char ch = 'a'; ch <= 'z'; ch++)
+            {
+                str[i] = ch;
+                if (ch == cpy)
+                    continue;
+
+                if (word_exist(str))
+                    return true;
+            }
+            str[i] = cpy;
+        }
+        return false;
+    }
 };
 
 void word_exist_test()
@@ -223,6 +243,18 @@ void auto_complete_test()
     for (string s : res)
         cout << s << endl;
 }
+
+void word_exist_with_1_change_test()
+{
+    Trie tr;
+    tr.insert_iterative("hello");
+    tr.insert_iterative("leetcode");
+
+    cout << tr.word_exist_with_1_change("xello") << endl;    // 1
+    cout << tr.word_exist_with_1_change("xyllo") << endl;    // 0
+    cout << tr.word_exist_with_1_change("hello") << endl;    // 0
+    cout << tr.word_exist_with_1_change("leatcode") << endl; // 1
+}
 int main()
 {
 
@@ -230,9 +262,11 @@ int main()
     // word_exist_iterative_test();
     // first_word_prefix_test();
     // get_all_strings_test();
-    auto_complete_test();
+    // auto_complete_test();
+    word_exist_with_1_change_test();
 
     // must see it, otherwise RTE
-    cout << "\n\nNO RTE\n";
+    cout
+        << "\n\nNO RTE\n";
     return 0;
 }
