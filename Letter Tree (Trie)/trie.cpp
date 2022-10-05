@@ -124,9 +124,24 @@ public:
                 child[i]->get_all_strings(res, cur_str + (char)('a' + i));
         }
     }
+
+    void auto_complete(const string &str, vector<string> &res)
+    {
+        Trie *cur = this;
+        for (int i = 0; i < (int)str.size(); i++)
+        {
+            int ch = str[i] - 'a';
+
+            if (!cur->child[ch])
+                return;
+
+            cur = cur->child[ch];
+        }
+        cur->get_all_strings(res, str);
+    }
 };
 
-void test1()
+void word_exist_test()
 {
     Trie tr;
     tr.insert("abcdef");
@@ -146,7 +161,7 @@ void test1()
     cout << tr.prefix_exist("def") << endl; // 1
 }
 
-void test2()
+void word_exist_iterative_test()
 {
     Trie tr;
     tr.insert_iterative("abcdef");
@@ -159,7 +174,7 @@ void test2()
     cout << tr.word_exist_iterative("cdef") << endl;   // 0
 }
 
-void test3()
+void first_word_prefix_test()
 {
     Trie tr;
     tr.insert_iterative("xyz");
@@ -174,7 +189,7 @@ void test3()
     cout << tr.first_word_prefix("azz") << endl;    // a
 }
 
-void test4()
+void get_all_strings_test()
 {
     Trie tr;
     tr.insert_iterative("abcd");
@@ -191,13 +206,31 @@ void test4()
         cout << s << endl;
 }
 
+void auto_complete_test()
+{
+    Trie tr;
+    tr.insert_iterative("a");
+    tr.insert_iterative("abcd");
+    tr.insert_iterative("xyz");
+    tr.insert_iterative("abx");
+    tr.insert_iterative("ab");
+    tr.insert_iterative("abyz");
+    tr.insert_iterative("bcd");
+
+    vector<string> res;
+    tr.auto_complete("ab", res);
+
+    for (string s : res)
+        cout << s << endl;
+}
 int main()
 {
 
-    // test1();
-    // test2();
-    // test3();
-    test4();
+    // word_exist_test();
+    // word_exist_iterative_test();
+    // first_word_prefix_test();
+    // get_all_strings_test();
+    auto_complete_test();
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
