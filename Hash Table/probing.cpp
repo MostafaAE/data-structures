@@ -121,6 +121,27 @@ public:
         }
         return false; // can't insert. full table
     }
+
+    bool get(PhoneEntry &phone)
+    {
+        int idx = phone.hash() % table_size;
+        for (int step = 0; step < table_size; step++)
+        {
+            // empty slot
+            if (!table[idx])
+                break;
+
+            // found
+            else if (table[idx] != deleted && table[idx]->name == phone.name)
+            {
+                phone.phone_number = table[idx]->phone_number;
+                return true;
+            }
+
+            idx = (idx + 1) % table_size; // move next
+        }
+        return false; // can't insert. full table
+    }
 };
 
 int main()
@@ -153,7 +174,6 @@ int main()
     cout << table.remove(PhoneEntry("hany", "")) << "\n";  // 1
     cout << table.remove(PhoneEntry("john", "")) << "\n";  // 1
     table.print_all();
-
     /*
         0 E
         1 (belal, 604-401-550)
@@ -161,6 +181,26 @@ int main()
         3 E
         4 (mostafa, 604-401-777)
         5 X
+        6 E
+        7 X
+        8 (ali, 604-401-343)
+        9 E
+        10 E
+    */
+
+    PhoneEntry e("belal", "");
+    if (table.get(e))
+        cout << e.phone_number << "\n"; // 604-401-550
+
+    table.put(PhoneEntry("hany", "604-401-555"));
+    table.print_all();
+    /*
+        0 E
+        1 (belal, 604-401-550)
+        2 (ziad, 604-401-17)
+        3 E
+        4 (mostafa, 604-401-777)
+        5 (hany, 604-401-555)
         6 E
         7 X
         8 (ali, 604-401-343)
