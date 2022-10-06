@@ -112,6 +112,25 @@ public:
         return str;
     }
 
+    void get_all_matches(const string &str, int starting_pos = 0)
+    {
+        Trie *cur = this;
+
+        for (int i = starting_pos; i < (int)str.size(); i++)
+        {
+
+            int ch = str[i] - 'a';
+
+            if (!cur->child[ch])
+                return;
+
+            cur = cur->child[ch];
+
+            if (cur->isLeaf)
+                cout << str.substr(starting_pos, i - starting_pos + 1) << " ";
+        }
+    }
+
     // O(NL) where N is the number of words and L is the word length
     void get_all_strings(vector<string> &res, string cur_str = "")
     {
@@ -160,6 +179,40 @@ public:
         return false;
     }
 };
+
+//
+void list_substrs(const string &str, vector<string> &queries)
+{
+    Trie tr;
+    // O(S^2) : S string length
+    for (int i = 0; i < (int)str.size(); i++)
+        tr.insert(str, i);
+
+    // O(QL) queries * query string length
+    for (string query : queries)
+        if (tr.prefix_exist(query))
+            cout << query << " ";
+
+    cout << endl;
+
+    // Total: O(S^2 + QL)
+}
+
+void list_substrs_optimized(const string &str, vector<string> &queries)
+{
+    Trie tr;
+    /// O(QL) queries * query string length
+    for (string query : queries)
+        tr.insert(query);
+
+    // O(SL) : S string length
+    for (int i = 0; i < (int)str.size(); i++)
+        tr.get_all_matches(str, i);
+
+    cout << endl;
+
+    // Tota: O(SL + QL)
+}
 
 void word_exist_test()
 {
@@ -224,6 +277,14 @@ void get_all_strings_test()
 
     for (string s : res)
         cout << s << endl;
+    /*
+        a
+        ab
+        abcd
+        bcd
+        xyz
+        xyzw
+     */
 }
 
 void auto_complete_test()
@@ -242,6 +303,13 @@ void auto_complete_test()
 
     for (string s : res)
         cout << s << endl;
+
+    /*
+        ab
+        abcd
+        abx
+        abyz
+    */
 }
 
 void word_exist_with_1_change_test()
@@ -263,8 +331,10 @@ int main()
     // first_word_prefix_test();
     // get_all_strings_test();
     // auto_complete_test();
-    word_exist_with_1_change_test();
-
+    // word_exist_with_1_change_test();
+    vector<string> queries({"xy", "ab", "t", "yz"});
+    list_substrs("heyabcdtwxyw", queries);
+    list_substrs_optimized("heyabcdtwxyw", queries);
     // must see it, otherwise RTE
     cout
         << "\n\nNO RTE\n";
