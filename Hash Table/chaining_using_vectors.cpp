@@ -10,6 +10,25 @@ int hash_string(string str, int n)
     return sum % nn;
 }
 
+struct PhoneEntry
+{
+    const static int INTERNAL_LIMIT = 65407;
+    string name;         // key
+    string phone_number; // data
+
+    int hash()
+    {
+        return hash_string(name, INTERNAL_LIMIT);
+    }
+
+    PhoneEntry(string name, string phone_number) : name(name), phone_number(phone_number) {}
+
+    void print()
+    {
+        cout << "(" << name << ", " << phone_number << ")  ";
+    }
+};
+
 int main()
 {
     // must see it, otherwise RTE
