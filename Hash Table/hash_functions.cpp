@@ -1,6 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+int hash_num(int value, int n_ = 65407)
+{
+    long long n = n_;
+    return (value % n + n) % n;
+}
+
 int hash_string(string str, int n_)
 {
     long long n = n_;
