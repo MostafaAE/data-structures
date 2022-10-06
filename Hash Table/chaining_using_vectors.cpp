@@ -29,6 +29,19 @@ struct PhoneEntry
     }
 };
 
+class PhoneHashTable
+{
+private:
+    int table_size;
+    vector<vector<PhoneEntry>> table;
+
+public:
+    PhoneHashTable(int table_size) : table_size(size)
+    {
+        table.resize(table_size);
+    }
+};
+
 int main()
 {
     // must see it, otherwise RTE
