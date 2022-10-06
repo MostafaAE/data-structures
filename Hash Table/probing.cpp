@@ -58,10 +58,42 @@ public:
     {
         table.resize(table_size);
     }
+
+    bool put(PhoneEntry phone)
+    {
+        int idx = phone.hash() % table_size;
+
+        for (int step = 0; step < table_size; step++)
+        {
+            // empty slot
+            if (!table[idx] || table[idx] == deleted)
+            {
+                table[idx] = new PhoneEntry(phone.name, phone.phone_number);
+                return true;
+            }
+            // update
+            else if (table[idx]->name == phone.name)
+            {
+                table[idx]->phone_number = phone.phone_number;
+                return true;
+            }
+
+            idx = (idx + 1) % table_size; // move next
+        }
+        return false; // can't insert. full table
+    }
 };
 
 int main()
 {
+    PhoneHashTable table(11);
+    table.put(PhoneEntry("mostafa", "604-401-120"));
+    table.put(PhoneEntry("mostafa", "604-401-777"));
+    table.put(PhoneEntry("ali", "604-401-343"));
+    table.put(PhoneEntry("ziad", "604-401-17"));
+    table.put(PhoneEntry("hany", "604-401-758"));
+    table.put(PhoneEntry("belal", "604-401-550"));
+    table.put(PhoneEntry("john", "604-401-223"));
 
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
