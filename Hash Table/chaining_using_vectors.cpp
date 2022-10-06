@@ -85,6 +85,22 @@ public:
         }
         return false;
     }
+
+    bool remove(PhoneEntry phone)
+    {
+        int idx = phone.hash() % table_size;
+        for (int i = 0; i < (int)table[idx].size(); i++)
+        {
+            if (table[idx][i].name == phone.name)
+            {
+                // Swap with last and remove last in O(1)
+                swap(table[idx][i], table[idx].back());
+                table[idx].pop_back();
+                return true;
+            }
+        }
+        return false;
+    }
 };
 
 int main()
@@ -108,6 +124,14 @@ int main()
     PhoneEntry e("mostafa", "");
     if (table.get(e))
         cout << e.phone_number << "\n"; // 604-401-777
+
+    cout << table.remove(PhoneEntry("smith", "")) << "\n"; // 0
+    cout << table.remove(PhoneEntry("hany", "")) << "\n";  // 1
+    cout << table.remove(PhoneEntry("belal", "")) << "\n"; // 1
+    table.print_all();
+    // Hash 0: (ali, 604-401-343)  (john, 604-401-223)
+    // Hash 1: (mostafa, 604-401-777)  (ziad, 604-401-17)
+
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
     return 0;
