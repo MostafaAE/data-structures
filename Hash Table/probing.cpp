@@ -82,6 +82,23 @@ public:
         }
         return false; // can't insert. full table
     }
+
+    void print_all()
+    {
+        for (int hash = 0; hash < table_size; hash++)
+        {
+            cout << hash << " ";
+            if (table[hash] == deleted)
+                cout << "X";
+            else if (!table[hash])
+                cout << "E";
+            else
+                table[hash]->print();
+
+            cout << "\n";
+        }
+        cout << "****************\n";
+    }
 };
 
 int main()
@@ -95,6 +112,20 @@ int main()
     table.put(PhoneEntry("belal", "604-401-550"));
     table.put(PhoneEntry("john", "604-401-223"));
 
+    table.print_all();
+    /*
+        0 E
+        1 (belal, 604-401-550)
+        2 (ziad, 604-401-17)
+        3 E
+        4 (mostafa, 604-401-777)
+        5 (hany, 604-401-758)
+        6 E
+        7 (john, 604-401-223)
+        8 (ali, 604-401-343)
+        9 E
+        10 E
+     */
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
     return 0;
