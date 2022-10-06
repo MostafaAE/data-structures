@@ -70,6 +70,21 @@ public:
             cout << "\n";
         }
     }
+
+    bool get(PhoneEntry &phone)
+    {
+        int idx = phone.hash() % table_size;
+
+        for (int i = 0; i < (int)table[idx].size(); i++)
+        {
+            if (table[idx][i].name == phone.name)
+            {
+                phone = table[idx][i];
+                return true;
+            }
+        }
+        return false;
+    }
 };
 
 int main()
@@ -86,10 +101,13 @@ int main()
     table.print_all();
     /*
     Hash 0: (ali, 604-401-343)  (hany, 604-401-758)  (john, 604-401-223)
-    Hash 1: (mostafa, 604-401-777)  (ziad, 604-401-17)
+    Hash 1: (mostafa, 604-401-777)  (ziad, 604-4    01-17)
     Hash 2: (belal, 604-401-550)
     */
 
+    PhoneEntry e("mostafa", "");
+    if (table.get(e))
+        cout << e.phone_number << "\n"; // 604-401-777
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
     return 0;
