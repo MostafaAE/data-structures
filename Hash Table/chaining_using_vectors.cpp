@@ -36,14 +36,38 @@ private:
     vector<vector<PhoneEntry>> table;
 
 public:
-    PhoneHashTable(int table_size) : table_size(size)
+    PhoneHashTable(int table_size) : table_size(table_size)
     {
         table.resize(table_size);
+    }
+
+    void put(PhoneEntry phone)
+    {
+        int idx = phone.hash() % table_size;
+        for (int i = 0; i < (int)table[idx].size(); i++)
+        {
+            // entry exists
+            if (table[idx][i].name == phone.name)
+            {
+                table[idx][i].phone_number = phone.phone_number;
+                return;
+            }
+        }
+        // entry does not exist
+        table[idx].push_back(phone);
     }
 };
 
 int main()
 {
+    PhoneHashTable table(3);
+    table.put(PhoneEntry("mostafa", "604-401-120"));
+    table.put(PhoneEntry("mostafa", "604-401-777")); // update
+    table.put(PhoneEntry("ali", "604-401-343"));
+    table.put(PhoneEntry("ziad", "604-401-17"));
+    table.put(PhoneEntry("hany", "604-401-758"));
+    table.put(PhoneEntry("belal", "604-401-550"));
+    table.put(PhoneEntry("john", "604-401-223"));
     // must see it, otherwise RTE
     cout << "\n\nNO RTE\n";
     return 0;
