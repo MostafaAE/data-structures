@@ -16,3 +16,4 @@ This repository hosts a collection of the internal implementations of essential 
 - **AVL Tree:** Self-balancing binary search tree ensuring logarithmic time complexity for operations.
 - **Letter Tree (Trie):** Tree-like structure for storing a dynamic set of strings with shared prefixes.
 - **Hash Table:** Data structure for implementing associative arrays based on hash functions.
+- **Binary Indexed Tree (Fenwick Tree):** A tree-like data structure for efficiently performing range sum queries and updates in logarithmic time.
