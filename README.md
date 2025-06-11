@@ -1,19 +1,43 @@
 # Data Structures
 
-This repository hosts a collection of the internal implementations of essential data structures in computer science. From basic linear structures like Linked Lists to advanced hierarchical trees and hash tables, this repository provides a comprehensive toolkit for understanding, implementing, and utilizing fundamental data structures in your projects.
+This repository hosts a curated collection of fundamental data structures implemented from scratch. From foundational linear structures to advanced trees and hash-based structures, this repository serves as a resource for understanding the inner workings of key data structures in computer science.
 
-## What's Inside?
+## What's Inside
 
-- **Vector:** A dynamic array offering efficient insertion, deletion, and access to elements.
-- **Singly Linked List**: Linear structure where each element points to the next.
-- **Doubly Linked List:** Similar to a singly linked list, but with bidirectional links.
-- **Sparse Array and Matrix:** Efficient storage and access for arrays and matrices with many default values.
-- **Stack:** Last-In-First-Out (LIFO) structure for managing data.
-- **Queue:** First-In-First-Out (FIFO) structure for managing data.
-- **Binary Tree:** Hierarchical structure with at most two children per node.
-- **Binary Search Tree:** Binary tree with efficient searching capabilities.
-- **Binary Heap:** Tree-based structure satisfying the heap property, useful for priority queues.
-- **AVL Tree:** Self-balancing binary search tree ensuring logarithmic time complexity for operations.
-- **Letter Tree (Trie):** Tree-like structure for storing a dynamic set of strings with shared prefixes.
-- **Hash Table:** Data structure for implementing associative arrays based on hash functions.
-- **Binary Indexed Tree (Fenwick Tree):** A tree-like data structure for efficiently performing range sum queries and updates in logarithmic time.
+### [Vector](./Vector)
+A dynamic array that supports random access and amortized constant-time insertions at the end.
+
+### [Linked List](./LinkedList)
+Sequential structures where elements point to the next (and optionally previous) node.
+- **Singly Linked List** – nodes linked in one direction.
+- **Doubly Linked List** – nodes linked in both directions.
+
+### [Sparse Array and Matrix](./Sparse%20Array%20and%20Matrix)
+Memory-efficient structures for representing arrays and matrices with many zero or default values.
+
+### [Stack](./Stack)
+A Last-In-First-Out (LIFO) structure used for backtracking, parsing, and more.
+
+### [Queue](./Queue)
+A First-In-First-Out (FIFO) structure useful in scheduling and buffering systems.
+
+### [Binary Tree](./Binary%20Tree)
+A hierarchical structure where each node has up to two children.
+
+### [Binary Search Tree](./Binary%20Search%20Tree)
+A binary tree where the left child is less than the node, and the right child is greater — enables fast lookups, insertions, and deletions.
+
+### [Binary Heap](./Binary%20Heap)
+A complete binary tree used for priority queues that maintains the heap property.
+
+### [AVL Tree](./AVL%20Tree)
+A self-balancing binary search tree that maintains height balance to ensure O(log n) operations.
+
+### [Letter Tree (Trie)](./Letter%20Tree%20(Trie))
+A prefix tree that supports fast insertion and lookup of strings with shared prefixes.
+
+### [Hash Table](./Hash%20Table)
+A structure that maps keys to values using a hash function — supports average-case constant-time operations.
+
+### [Binary Indexed Tree (Fenwick Tree)](./Binary%20Indexed%20Tree)
+A compact tree-like structure for efficiently computing prefix sums and handling updates in logarithmic time.
