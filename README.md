@@ -41,3 +41,9 @@ A structure that maps keys to values using a hash function — supports average-
 
 ### [Binary Indexed Tree (Fenwick Tree)](./Binary%20Indexed%20Tree)
 A compact tree-like structure for efficiently computing prefix sums and handling updates in logarithmic time.
+
+### [Segment Tree](./Segment%20Tree)
+A binary tree used for range queries and updates in logarithmic time.  
+- **Range Sum Query** – efficiently computes sum over a range.
+- **Range Minimum Query** – finds the minimum element in a range.
+- **Range Maximum Query** – finds the maximum element in a range.
