@@ -50,10 +50,10 @@ public:
 
         while (left < right) 
         {
-            if (left % 2 == 1)  // If left is a right child
+            if (left & 1)  // If left is a right child
                 sum += tree[left++];
 
-            if (right % 2 == 1) // If right is a right child
+            if (right & 1) // If right is a right child
                 sum += tree[--right];
 
             left /= 2;
